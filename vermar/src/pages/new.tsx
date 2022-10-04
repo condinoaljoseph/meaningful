@@ -1,14 +1,20 @@
 import type { NextPage } from "next";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { ButtonBack } from "../components/ButtonBack";
 import { Block } from "../components/ui/Block";
 import { Button } from "../components/ui/Button";
 import { Form } from "../components/ui/Form";
 import { Input } from "../components/ui/Input";
+import { Markdown } from "../components/ui/Markdown";
 import { TextArea } from "../components/ui/Textarea";
 
 const New: NextPage = () => {
   const form = useForm();
+  const source = form.watch("content");
+  const title = form.watch("title");
+
+  const [preview, setPreview] = useState<boolean>(false);
 
   return (
     <div className="lg:flex">
@@ -24,20 +30,30 @@ const New: NextPage = () => {
           </div>
         </Block>
 
-        <Form form={form} onSubmit={(data) => console.log(data)}>
-          <Input label="Title" />
-          <TextArea label="Content" rows={5} />
-        </Form>
+        {!preview ? (
+          <Form form={form} onSubmit={(data) => console.log(data)}>
+            <Input label="Title" {...form.register("title")} />
+            <TextArea label="Content" rows={5} {...form.register("content")} />
+          </Form>
+        ) : (
+          <>
+            <h1 className="w-full break-all">{title || "Untitled"}</h1>
+            <div className="mb-2">
+              <Markdown source={source} />
+            </div>
+          </>
+        )}
       </div>
-
-      {/* <div className="mb-2">
-        preview
-      </div> */}
 
       <div className="w-full lg:w-4/12 lg:min-w-[321px]">
         <Block className="lg:fixed lg:w-[320px]">
           <div className="p-4 leading-5 sm:leading-6">
-            <Button className="mb-2 block w-full">Preview</Button>
+            <Button
+              onClick={() => setPreview(!preview)}
+              className="mb-2 block w-full"
+            >
+              {preview ? "Edit" : "Preview"}
+            </Button>
             <Button className="mb-2 block w-full" primary>
               Continue
             </Button>
