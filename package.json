@@ -1,0 +1,13 @@
+{
+  "name": "meaningful",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "workspaces": [
+    "dern",
+    "vermar"
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
