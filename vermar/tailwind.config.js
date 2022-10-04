@@ -67,5 +67,5 @@ module.exports = {
       lg: "2px 4px 9px var(--shadow-color)",
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/line-clamp")],
 };
