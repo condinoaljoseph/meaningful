@@ -100,3 +100,5 @@
 .s-error {
   @apply flex items-center text-red text-sm transition-all duration-200;
 }
+
+@import url("./markdown.css");
