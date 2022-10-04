@@ -1,7 +1,5 @@
 @tailwind base;
 @tailwind components;
-@tailwind components;
-@tailwind utilities;
 @tailwind utilities;
 
 [data-theme="dark"] {
@@ -91,4 +89,14 @@
   select {
     @apply bg-skin-bg;
   }
+}
+
+/* Shot UI kit */
+
+.s-input {
+  @apply block w-full rounded-full border border-skin-border bg-skin-bg py-2 px-3 text-skin-link outline-none focus-within:border-skin-text;
+}
+
+.s-error {
+  @apply flex items-center text-red text-sm transition-all duration-200;
 }
