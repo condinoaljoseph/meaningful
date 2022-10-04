@@ -19,7 +19,7 @@ export const Sidebar = ({ className = "" }: { className?: string }) => {
         </Link>
       </div>
       <div className="mt-2 px-2">
-        <Link href="/">
+        <Link href="/new">
           <ButtonRounded>
             <PlusIcon className="h-[1.2em] w-[1.2em]" />
           </ButtonRounded>
