@@ -1,4 +1,4 @@
-import { FaceSmileIcon, PlusIcon } from "@heroicons/react/24/outline";
+import { CodeBracketIcon, PlusIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import Link from "next/link";
 import { ButtonRounded } from "./ui/ButtonRounded";
@@ -14,7 +14,7 @@ export const Sidebar = ({ className = "" }: { className?: string }) => {
       <div className="relative flex items-center px-2">
         <Link href="/">
           <ButtonRounded className="!border-0">
-            <FaceSmileIcon className="h-[36px] w-[36px] text-meaningful" />
+            <CodeBracketIcon className="h-[36px] w-[36px] text-meaningful" />
           </ButtonRounded>
         </Link>
       </div>
