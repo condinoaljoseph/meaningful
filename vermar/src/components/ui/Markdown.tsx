@@ -21,18 +21,20 @@ export const Markdown = ({ source = "" }: { source?: string }) => {
       body.querySelectorAll("pre>code").forEach(function (code) {
         const parent = code.parentElement;
         if (parent !== null) parent.classList.add("rounded-lg");
-        const copyButton = document.createElement("a");
-        const icon = document.createElement("span");
-        icon.textContent = "copy";
-        icon.classList.add("copy");
-        icon.classList.add("text-skin-text");
-        copyButton.appendChild(icon);
+        const copyButton = document.createElement("button");
+        const copySpan = document.createElement("span");
+        copySpan.textContent = "copy";
+        copySpan.classList.add("copy");
+        copySpan.classList.add("text-skin-text");
+        copyButton.appendChild(copySpan);
         copyButton.addEventListener("click", function () {
-          if (parent !== null) copyToClipboard(parent.innerText.trim());
+          if (parent !== null)
+            copyToClipboard(code.firstChild?.textContent?.trim());
         });
         code.appendChild(copyButton);
       });
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [markdown]);
 
   return (
     <div className="markdown-body break-words">

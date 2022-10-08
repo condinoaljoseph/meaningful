@@ -399,7 +399,6 @@
 }
 
 .markdown-body pre > code .copy {
-  cursor: pointer;
   position: absolute;
   right: 1.2rem;
   top: 1.2rem;
