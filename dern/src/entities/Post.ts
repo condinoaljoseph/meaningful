@@ -5,27 +5,36 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BaseEntity,
-  OneToMany,
+  ManyToOne,
 } from "typeorm";
 import { Field, ObjectType } from "type-graphql";
-import { Post } from "./Post";
+import { User } from "./User";
 
 @ObjectType()
 @Entity()
-export class User extends BaseEntity {
+export class Post extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id!: number;
 
   @Field()
-  @Column({ unique: true })
-  username!: string;
-
   @Column()
-  password!: string;
+  title!: string;
 
-  @OneToMany(() => Post, (post) => post.creator)
-  posts: Post[];
+  @Field()
+  @Column()
+  content!: string;
+
+  @Field()
+  @Column({ type: "int", default: 0 })
+  points!: string;
+
+  @Field()
+  @Column()
+  creatorId: number;
+
+  @ManyToOne(() => User, (user) => user.posts)
+  creator: User;
 
   @Field(() => String)
   @CreateDateColumn()

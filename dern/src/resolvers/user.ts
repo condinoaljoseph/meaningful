@@ -11,7 +11,7 @@ import {
 } from "type-graphql";
 import argon2 from "argon2";
 import { AppDataSource } from "../data-source";
-import { Context } from "../types";
+import { AppContext } from "../types";
 import { COOKIE_NAME } from "../constants";
 
 @InputType()
@@ -44,7 +44,7 @@ class UserResponse {
 @Resolver()
 export class UserResolver {
   @Query(() => User, { nullable: true })
-  async me(@Ctx() ctx: Context): Promise<User | null> {
+  async me(@Ctx() ctx: AppContext): Promise<User | null> {
     if (!ctx.req.session.userId) {
       return null;
     }
@@ -53,7 +53,10 @@ export class UserResolver {
   }
 
   @Mutation(() => UserResponse)
-  async login(@Arg("options") options: UserPasswordInput, @Ctx() ctx: Context) {
+  async login(
+    @Arg("options") options: UserPasswordInput,
+    @Ctx() ctx: AppContext
+  ) {
     const user = await User.findOneBy({ username: options.username });
     if (!user) {
       return {
@@ -87,7 +90,7 @@ export class UserResolver {
   @Mutation(() => UserResponse)
   async register(
     @Arg("options") options: UserPasswordInput,
-    @Ctx() ctx: Context
+    @Ctx() ctx: AppContext
   ): Promise<UserResponse> {
     if (options.username.length <= 2) {
       return {
@@ -145,7 +148,7 @@ export class UserResolver {
   }
 
   @Mutation(() => Boolean)
-  logout(@Ctx() ctx: Context) {
+  logout(@Ctx() ctx: AppContext) {
     return new Promise((resolve) => {
       ctx.req.session.destroy((error: any) => {
         if (error) {
