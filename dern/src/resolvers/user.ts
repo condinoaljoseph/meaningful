@@ -1,50 +1,161 @@
 import { User } from "../entities/User";
-import { Arg, Field, InputType, Mutation, Query, Resolver } from "type-graphql";
+import {
+  Arg,
+  Field,
+  InputType,
+  Mutation,
+  Query,
+  Resolver,
+  ObjectType,
+  Ctx,
+} from "type-graphql";
+import argon2 from "argon2";
 import { AppDataSource } from "../data-source";
+import { Context } from "../types";
+import { COOKIE_NAME } from "../constants";
 
 @InputType()
-class UserInput {
+class UserPasswordInput {
   @Field()
-  firstName: string;
+  username: string;
+
   @Field()
-  lastName: string;
+  password: string;
+}
+
+@ObjectType()
+class FieldError {
+  @Field()
+  field: string;
+
+  @Field()
+  message: string;
+}
+
+@ObjectType()
+class UserResponse {
+  @Field(() => [FieldError], { nullable: true })
+  errors?: FieldError[];
+
+  @Field(() => User, { nullable: true })
+  user?: User;
 }
 
 @Resolver()
 export class UserResolver {
-  @Query(() => [User])
-  async users(): Promise<User[]> {
-    return await User.find();
-  }
-
   @Query(() => User, { nullable: true })
-  async user(@Arg("id") id: number): Promise<User | null> {
-    return await User.findOneBy({ id });
+  async me(@Ctx() ctx: Context): Promise<User | null> {
+    if (!ctx.req.session.userId) {
+      return null;
+    }
+
+    return await User.findOneBy({ id: ctx.req.session.userId });
   }
 
-  @Mutation(() => User)
-  async createUser(@Arg("input") input: UserInput): Promise<User> {
-    return User.create({ ...input }).save();
+  @Mutation(() => UserResponse)
+  async login(@Arg("options") options: UserPasswordInput, @Ctx() ctx: Context) {
+    const user = await User.findOneBy({ username: options.username });
+    if (!user) {
+      return {
+        errors: [
+          {
+            field: "username",
+            message: "username doesn't exist",
+          },
+        ],
+      };
+    }
+
+    const isValid = await argon2.verify(user.password, options.password);
+
+    if (!isValid) {
+      return {
+        errors: [
+          {
+            field: "password",
+            message: "incorrect password",
+          },
+        ],
+      };
+    }
+
+    ctx.req.session.userId = user.id;
+
+    return { user };
   }
 
-  @Mutation(() => User)
-  async updateUser(
-    @Arg("id") id: number,
-    @Arg("input") input: UserInput
-  ): Promise<User> {
-    const result = await AppDataSource.createQueryBuilder()
-      .update(User)
-      .set({ ...input })
-      .where("id = :id", { id })
-      .returning("*")
-      .execute();
+  @Mutation(() => UserResponse)
+  async register(
+    @Arg("options") options: UserPasswordInput,
+    @Ctx() ctx: Context
+  ): Promise<UserResponse> {
+    if (options.username.length <= 2) {
+      return {
+        errors: [
+          {
+            field: "username",
+            message: "username length must be greater than 2",
+          },
+        ],
+      };
+    }
 
-    return result.raw[0];
+    if (options.password.length <= 2) {
+      return {
+        errors: [
+          {
+            field: "username",
+            message: "password length must be greater than 2",
+          },
+        ],
+      };
+    }
+
+    const hashedPassword = await argon2.hash(options.password);
+    let user;
+
+    try {
+      const result = await AppDataSource.createQueryBuilder()
+        .insert()
+        .into(User)
+        .values({
+          username: options.username,
+          password: hashedPassword,
+        })
+        .returning("*")
+        .execute();
+
+      user = result.raw[0];
+    } catch (error) {
+      if (error.code === "23505") {
+        return {
+          errors: [
+            {
+              field: "username",
+              message: "username already taken",
+            },
+          ],
+        };
+      }
+    }
+
+    ctx.req.session.userId = user.id;
+
+    return { user };
   }
 
   @Mutation(() => Boolean)
-  async deleteUser(@Arg("id") id: number): Promise<boolean> {
-    await User.delete({ id });
-    return true;
+  logout(@Ctx() ctx: Context) {
+    return new Promise((resolve) => {
+      ctx.req.session.destroy((error: any) => {
+        if (error) {
+          console.log(error);
+          resolve(false);
+        }
+
+        ctx.res.clearCookie(COOKIE_NAME);
+        resolve(true);
+      });
+    });
   }
 }
