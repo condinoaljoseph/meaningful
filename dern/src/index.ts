@@ -4,13 +4,18 @@ import { ApolloServer } from "apollo-server-express";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 import { buildSchema } from "type-graphql";
 import { HelloResolver } from "./resolvers/hello";
+import { AppDataSource } from "./data-source";
+import { UserResolver } from "./resolvers/User";
 
 const main = async () => {
+  await AppDataSource.initialize();
+
   const app = express();
 
   const server = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver],
+      resolvers: [HelloResolver, UserResolver],
+      validate: false,
     }),
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
   });
