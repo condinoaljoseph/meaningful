@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-export type Context = {
+export type AppContext = {
   req: Request & { session: any };
   res: Response;
 };

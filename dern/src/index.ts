@@ -10,6 +10,7 @@ import session from "express-session";
 import Redis from "ioredis";
 import connectRedis from "connect-redis";
 import { COOKIE_NAME, __prod__ } from "./constants";
+import { PostResolver } from "./resolvers/post";
 
 const main = async () => {
   const redis = new Redis();
@@ -31,13 +32,13 @@ const main = async () => {
       },
       saveUninitialized: true,
       secret: "ayaw boss",
-      resave: true,
+      resave: false,
     })
   );
 
   const server = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, UserResolver],
+      resolvers: [HelloResolver, UserResolver, PostResolver],
       validate: false,
     }),
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
