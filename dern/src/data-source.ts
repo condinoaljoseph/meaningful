@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { Post } from "./entities/Post";
+import { Reaction } from "./entities/Reaction";
 import { User } from "./entities/User";
 
 export const AppDataSource = new DataSource({
@@ -10,5 +11,5 @@ export const AppDataSource = new DataSource({
   database: "meaningful",
   synchronize: true,
   logging: true,
-  entities: [User, Post],
+  entities: [User, Post, Reaction],
 });

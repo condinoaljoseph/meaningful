@@ -11,6 +11,7 @@ import Redis from "ioredis";
 import connectRedis from "connect-redis";
 import { COOKIE_NAME, __prod__ } from "./constants";
 import { PostResolver } from "./resolvers/post";
+import { ReactionResolver } from "./resolvers/reaction";
 
 const main = async () => {
   const redis = new Redis();
@@ -38,7 +39,7 @@ const main = async () => {
 
   const server = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, UserResolver, PostResolver],
+      resolvers: [HelloResolver, UserResolver, PostResolver, ReactionResolver],
       validate: false,
     }),
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
