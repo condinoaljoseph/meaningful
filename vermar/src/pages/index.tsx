@@ -2,8 +2,13 @@ import { ExclamationCircleIcon } from "@heroicons/react/24/solid";
 import type { NextPage } from "next";
 import { PostsList } from "../components/PostsList";
 import { Block } from "../components/ui/Block";
+import { useHelloQuery } from "../generated/graphql";
 
 const Home: NextPage = () => {
+  const { data } = useHelloQuery();
+
+  console.log(data);
+
   return (
     <div className="lg:flex">
       <div className="relative float-left w-full pr-0 lg:w-3/4 lg:pr-5">
