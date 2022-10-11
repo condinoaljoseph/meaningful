@@ -5,5 +5,8 @@
   "workspaces": [
     "dern",
     "vermar"
-  ]
+  ],
+  "dependencies": {
+    "graphql": "15.3.0"
+  }
 }
