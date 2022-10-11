@@ -45,11 +45,13 @@ class UserResponse {
 export class UserResolver {
   @Query(() => User, { nullable: true })
   async me(@Ctx() ctx: AppContext): Promise<User | null> {
-    if (!ctx.req.session.userId) {
+    const { userId } = ctx.req.session;
+
+    if (!userId) {
       return null;
     }
 
-    return await User.findOneBy({ id: ctx.req.session.userId });
+    return await User.findOneBy({ id: userId });
   }
 
   @Mutation(() => UserResponse)

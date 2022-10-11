@@ -15,9 +15,10 @@ export class ReactionResolver {
     @Ctx() ctx: AppContext
   ): Promise<boolean> {
     const { userId } = ctx.req.session;
+
     const reaction = await Reaction.findOneBy({
       postId,
-      userId: ctx.req.session.userId,
+      userId,
       type,
     });
 
@@ -48,7 +49,7 @@ export class ReactionResolver {
               insert into reaction ("userId", "postId", type, value) 
               values ($1, $2, $3, $4) 
             `,
-          [ctx.req.session.userId, postId, type, true]
+          [userId, postId, type, true]
         );
 
         await tem.query(
