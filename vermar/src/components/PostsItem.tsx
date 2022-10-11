@@ -5,13 +5,15 @@ import { Block } from "./ui/Block";
 export const PostsItem = ({
   title,
   content,
+  id,
 }: {
   title: string;
   content: string;
+  id: number;
 }) => {
   return (
     <Block className="hover:border-skin-text">
-      <Link href="/post">
+      <Link href={`/post/${id}`}>
         <a className="block p-3 text-skin-text sm:p-4">
           <div>
             <div className="mb-2 flex items-center justify-between">

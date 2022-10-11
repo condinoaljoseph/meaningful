@@ -1,18 +1,28 @@
 import type { NextPage } from "next";
-import { ButtonShare } from "../components/ButtonShare";
-import { Avatar } from "../components/ui/Avatar";
-import { Markdown } from "../components/ui/Markdown";
+import { useRouter } from "next/router";
+import { ButtonShare } from "../../components/ButtonShare";
+import { Avatar } from "../../components/ui/Avatar";
+import { Markdown } from "../../components/ui/Markdown";
+import { usePostQuery } from "../../generated/graphql";
 
-const staticPost =
-  "Ipsum dolor sit amet consectetur adipisicing elit. Tempora, officia officiis est, quod sint labore repellat nemo consequatur vel nihil voluptatem nesciunt omnis ipsum ipsa dolore alias eos, tempore illo?\n ```js\n console.log('hello world');\n console.log('testing')\n```\n Tempora, officia officiis est, quod sint labore repellat nemo consequatur vel nihil voluptatem nesciunt omnis ipsum ipsa dolore alias eos, tempore illo?";
+// "Ipsum dolor sit amet consectetur adipisicing elit. Tempora, officia officiis est, quod sint labore repellat nemo consequatur vel nihil voluptatem nesciunt omnis ipsum ipsa dolore alias eos, tempore illo?\n ```js\n console.log('hello world');\n console.log('testing')\n```\n Tempora, officia officiis est, quod sint labore repellat nemo consequatur vel nihil voluptatem nesciunt omnis ipsum ipsa dolore alias eos, tempore illo?";
 
 const Post: NextPage = () => {
+  const {
+    query: { id },
+  } = useRouter();
+  const { data, loading } = usePostQuery({
+    variables: { id: parseInt(id as string) },
+  });
+
+  if (!data && loading) return null;
+
   return (
     <div className="lg:flex">
       <div className="relative float-left w-full pr-0 lg:w-3/4 lg:pr-5">
         <div className="px-3 md:px-0">
           <h1 className="mb-3 break-words text-xl leading-8 sm:text-2xl">
-            Lorem ipsum dolor sit amet.
+            {data?.post?.title}
           </h1>
 
           <div className="mb-4 flex flex-col sm:flex-row sm:space-x-1">
@@ -32,7 +42,7 @@ const Post: NextPage = () => {
 
           <div className="relative">
             <div className="absolute bottom-0 h-[80px] w-full" />
-            <Markdown source={staticPost} />
+            <Markdown source={data?.post?.content} />
           </div>
         </div>
       </div>
