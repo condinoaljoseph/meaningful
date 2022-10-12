@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Avatar } from "./ui/Avatar";
+import { AvatarUser } from "./ui/AvatarUser";
 import { Block } from "./ui/Block";
 
 export const PostsItem = ({
@@ -19,10 +19,7 @@ export const PostsItem = ({
             <div className="mb-2 flex items-center justify-between">
               <div className="flex items-center space-x-1">
                 <div className="flex items-center">
-                  <Avatar
-                    src="https://avatars.githubusercontent.com/u/41994701?v=4"
-                    size="28"
-                  />
+                  <AvatarUser user="dern" size="28" />
                   <span className="ml-2 text-skin-link">dern</span>
                 </div>
               </div>

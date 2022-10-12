@@ -3,7 +3,7 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { ButtonFollow } from "../../components/ButtonFollow";
 import { ButtonShare } from "../../components/ButtonShare";
-import { Avatar } from "../../components/ui/Avatar";
+import { AvatarUser } from "../../components/ui/AvatarUser";
 import { Block } from "../../components/ui/Block";
 import { ButtonRounded } from "../../components/ui/ButtonRounded";
 import { Markdown } from "../../components/ui/Markdown";
@@ -35,10 +35,7 @@ const Post: NextPage = () => {
 
             <div className="mb-4 flex flex-col sm:flex-row sm:space-x-1">
               <div className="mb-1 flex items-center sm:mb-0">
-                <Avatar
-                  src="https://avatars.githubusercontent.com/u/41994701?v=4"
-                  size="28"
-                />
+                <AvatarUser user="dern" size="28" />
               </div>
               <div className="flex grow items-center space-x-1">
                 <span className="ml-2 text-skin-link">dern</span>
@@ -62,11 +59,7 @@ const Post: NextPage = () => {
             <div className="lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto">
               <div className="block px-4 pt-4 text-center md:flex lg:block lg:px-0 lg:pt-0">
                 <div className="flex lg:block">
-                  <Avatar
-                    src="https://avatars.githubusercontent.com/u/41994701?v=4"
-                    size="80"
-                    className="lg:my-3"
-                  />
+                  <AvatarUser user="dern" size="80" className="lg:my-3" />
                   <div className="mx-3 flex flex-col justify-center truncate text-left lg:block lg:text-center">
                     <h3 className="mb-[2px] flex items-center lg:justify-center">
                       <div className="mr-1 truncate">dern</div>
