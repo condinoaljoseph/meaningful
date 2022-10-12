@@ -12,11 +12,9 @@ const Home: NextPage = () => {
 
       <div className="w-full lg:w-4/12 lg:min-w-[321px]">
         <Block className="lg:fixed lg:w-[320px]">
-          <div className="p-4 leading-5 sm:leading-6">
-            <ExclamationCircleIcon className="w-[1em] h-[1em] inline mr-1" />
-            meaningful is still in the beta phase, things may break, please
-            handle us with care.
-          </div>
+          <ExclamationCircleIcon className="w-[1em] h-[1em] inline mr-1" />
+          meaningful is still in the beta phase, things may break, please handle
+          us with care.
         </Block>
       </div>
     </div>

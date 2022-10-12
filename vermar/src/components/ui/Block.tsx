@@ -1,23 +1,27 @@
 import clsx from "clsx";
 import { ReactNode } from "react";
 
-export const Block = ({
-  children,
-  className = "",
-  title = "",
-  hideBottomBorder,
-  label,
-  labelTooltip,
-  isCollapsable,
-}: {
+interface Props {
   children?: ReactNode;
   className?: string;
+  slim?: boolean;
   title?: string;
   hideBottomBorder?: boolean;
   label?: string;
   labelTooltip?: string;
   isCollapsable?: boolean;
-}) => {
+}
+
+export const Block = ({
+  children,
+  className = "",
+  slim = false,
+  title = "",
+  hideBottomBorder,
+  label,
+  labelTooltip,
+  isCollapsable,
+}: Props) => {
   return (
     <div
       className={clsx(
@@ -49,7 +53,9 @@ export const Block = ({
           </div>
         </div>
       ) : null}
-      {children}
+      <div className={clsx("leading-5 sm:leading-6", { "p-4": !slim })}>
+        {children}
+      </div>
     </div>
   );
 };

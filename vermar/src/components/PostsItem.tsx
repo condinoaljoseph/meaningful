@@ -14,7 +14,7 @@ export const PostsItem = ({
   return (
     <Block className="hover:border-skin-text">
       <Link href={`/post/${id}`}>
-        <a className="block p-3 text-skin-text sm:p-4">
+        <a className="block text-skin-text">
           <div>
             <div className="mb-2 flex items-center justify-between">
               <div className="flex items-center space-x-1">
