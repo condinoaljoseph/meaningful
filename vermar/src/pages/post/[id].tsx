@@ -1,10 +1,10 @@
 import { BellAlertIcon } from "@heroicons/react/24/outline";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
+import { ButtonFollow } from "../../components/ButtonFollow";
 import { ButtonShare } from "../../components/ButtonShare";
 import { Avatar } from "../../components/ui/Avatar";
 import { Block } from "../../components/ui/Block";
-import { Button } from "../../components/ui/Button";
 import { ButtonRounded } from "../../components/ui/ButtonRounded";
 import { Markdown } from "../../components/ui/Markdown";
 import { usePostQuery } from "../../generated/graphql";
@@ -13,9 +13,11 @@ const Post: NextPage = () => {
   const {
     query: { id },
   } = useRouter();
+
   const { data, loading } = usePostQuery({
     variables: { id: parseInt(id as string) },
   });
+
   return (
     <div className="lg:flex">
       <div className="relative float-left w-full pr-0 lg:w-3/4 lg:pr-5">
@@ -74,7 +76,7 @@ const Post: NextPage = () => {
                 </div>
 
                 <div className="flex flex-grow items-start justify-end gap-x-2 lg:mb-4 lg:justify-center">
-                  <Button primary>Follow</Button>
+                  <ButtonFollow />
                   <ButtonRounded className="inline">
                     <BellAlertIcon className="h-[1.2em] w-[1.2em]" />
                   </ButtonRounded>
