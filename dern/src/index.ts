@@ -12,6 +12,7 @@ import connectRedis from "connect-redis";
 import { COOKIE_NAME, __prod__ } from "./constants";
 import { PostResolver } from "./resolvers/post";
 import { ReactionResolver } from "./resolvers/reaction";
+import cors from "cors";
 
 const main = async () => {
   const redis = new Redis();
@@ -20,6 +21,13 @@ const main = async () => {
   await AppDataSource.initialize();
 
   const app = express();
+
+  app.use(
+    cors({
+      credentials: true,
+      origin: "http://localhost:3000",
+    })
+  );
 
   app.use(
     session({
@@ -50,7 +58,7 @@ const main = async () => {
   });
 
   await server.start();
-  server.applyMiddleware({ app });
+  server.applyMiddleware({ app, cors: false });
 
   app.listen(4000, () => {
     console.log("server running on port 4000");
