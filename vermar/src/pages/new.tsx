@@ -27,8 +27,8 @@ const New: NextPage = () => {
               <Input label="Title" {...form.register("title")} />
               <TextArea
                 label="Content"
-                rows={5}
                 {...form.register("content")}
+                count={source.length}
               />
             </Form>
           </>
