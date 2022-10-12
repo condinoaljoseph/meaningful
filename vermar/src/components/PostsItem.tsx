@@ -12,9 +12,9 @@ export const PostsItem = ({
   id: number;
 }) => {
   return (
-    <Block className="hover:border-skin-text">
-      <Link href={`/post/${id}`}>
-        <a className="block text-skin-text">
+    <Link href={`/post/${id}`}>
+      <a className="block text-skin-text">
+        <Block className="hover:border-skin-text">
           <div>
             <div className="mb-2 flex items-center justify-between">
               <div className="flex items-center space-x-1">
@@ -30,8 +30,8 @@ export const PostsItem = ({
             </div>
           </div>
           <div className="mt-3">5 days ago</div>
-        </a>
-      </Link>
-    </Block>
+        </Block>
+      </a>
+    </Link>
   );
 };
