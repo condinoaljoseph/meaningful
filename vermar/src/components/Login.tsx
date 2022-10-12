@@ -1,6 +1,6 @@
 import router from "next/router";
 import { useForm } from "react-hook-form";
-import { useLoginMutation } from "../generated/graphql";
+import { MeDocument, MeQuery, useLoginMutation } from "../generated/graphql";
 import { Button } from "./ui/Button";
 import { Form } from "./ui/Form";
 import { Input } from "./ui/Input";
@@ -23,14 +23,21 @@ export const Login = () => {
           variables: {
             options: { ...data },
           },
-        });
 
+          update: (cache, { data }) => {
+            cache.writeQuery<MeQuery>({
+              query: MeDocument,
+              data: {
+                __typename: "Query",
+                me: data?.login.user,
+              },
+            });
+          },
+        });
         if (response.data?.login.errors) {
           response.data.login.errors.forEach((error) => {
             form.setError(error.field as any, { message: error.message });
           });
-        } else if (response.data?.login.user) {
-          router.push("/");
         }
       }}
     >
