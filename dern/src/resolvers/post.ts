@@ -26,12 +26,19 @@ class PostInput {
 export class PostResolver {
   @Query(() => [Post])
   async posts(): Promise<Post[]> {
-    return await Post.find();
+    return await AppDataSource.getRepository(Post)
+      .createQueryBuilder("p")
+      .innerJoinAndSelect("p.creator", "u", 'u.id = p."creatorId"')
+      .getMany();
   }
 
   @Query(() => Post, { nullable: true })
   async post(@Arg("id") id: number): Promise<Post | null> {
-    return await Post.findOneBy({ id });
+    return await AppDataSource.getRepository(Post)
+      .createQueryBuilder("p")
+      .innerJoinAndSelect("p.creator", "u", 'u.id = p."creatorId"')
+      .where("p.id = :id", { id })
+      .getOne();
   }
 
   @Mutation(() => Post)

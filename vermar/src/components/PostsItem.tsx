@@ -1,29 +1,28 @@
 import Link from "next/link";
-import { Avatar } from "./ui/Avatar";
+import { AvatarUser } from "./ui/AvatarUser";
 import { Block } from "./ui/Block";
 
 export const PostsItem = ({
   title,
   content,
   id,
+  user,
 }: {
   title: string;
   content: string;
   id: number;
+  user: string;
 }) => {
   return (
-    <Block className="hover:border-skin-text">
-      <Link href={`/post/${id}`}>
-        <a className="block text-skin-text">
+    <Link href={`/post/${id}`}>
+      <a className="block text-skin-text">
+        <Block className="hover:border-skin-text">
           <div>
             <div className="mb-2 flex items-center justify-between">
               <div className="flex items-center space-x-1">
                 <div className="flex items-center">
-                  <Avatar
-                    src="https://avatars.githubusercontent.com/u/41994701?v=4"
-                    size="28"
-                  />
-                  <span className="ml-2 text-skin-link">dern</span>
+                  <AvatarUser user={user} size="28" />
+                  <span className="ml-2 text-skin-link">{user}</span>
                 </div>
               </div>
             </div>
@@ -33,8 +32,8 @@ export const PostsItem = ({
             </div>
           </div>
           <div className="mt-3">5 days ago</div>
-        </a>
-      </Link>
-    </Block>
+        </Block>
+      </a>
+    </Link>
   );
 };

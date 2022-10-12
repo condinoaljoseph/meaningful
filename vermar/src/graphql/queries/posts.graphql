@@ -4,5 +4,9 @@ query Posts {
     title
     content
     likes
+    createdAt
+    creator {
+      username
+    }
   }
 }

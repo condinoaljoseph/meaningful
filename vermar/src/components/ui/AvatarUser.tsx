@@ -1,12 +1,12 @@
 import clsx from "clsx";
 import Image from "next/image";
 
-export const Avatar = ({
-  src,
+export const AvatarUser = ({
+  user = "meaningful",
   size,
   className = "",
 }: {
-  src: string;
+  user?: string;
   size?: string;
   className?: string;
 }) => {
@@ -16,7 +16,7 @@ export const Avatar = ({
     >
       <Image
         className={clsx("rounded-full bg-skin-border")}
-        src={src}
+        src={`https://robohash.org/${user}.png`}
         alt="avatar"
         width={Number(size)}
         height={Number(size)}

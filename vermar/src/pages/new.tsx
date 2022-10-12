@@ -9,7 +9,12 @@ import { Markdown } from "../components/ui/Markdown";
 import { TextArea } from "../components/ui/Textarea";
 
 const New: NextPage = () => {
-  const form = useForm();
+  const form = useForm({
+    defaultValues: {
+      title: "",
+      content: "",
+    },
+  });
   const source = form.watch("content");
   const title = form.watch("title");
 
@@ -27,8 +32,8 @@ const New: NextPage = () => {
               <Input label="Title" {...form.register("title")} />
               <TextArea
                 label="Content"
-                rows={5}
                 {...form.register("content")}
+                count={source.length}
               />
             </Form>
           </>

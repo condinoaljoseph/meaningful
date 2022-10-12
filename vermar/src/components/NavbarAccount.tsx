@@ -1,16 +1,37 @@
-import { useRouter } from "next/router";
+import { useState } from "react";
+import { useMeQuery } from "../generated/graphql";
+import { Login } from "./Login";
+import { AvatarUser } from "./ui/AvatarUser";
 import { Button } from "./ui/Button";
+import { MenuAccount } from "./ui/MenuAccount";
+import { Modal } from "./ui/Modal";
 
 export const NavbarAccount = () => {
-  const router = useRouter();
+  const [showModal, setShowModal] = useState<boolean>(false);
 
-  return (
-    <Button
-      onClick={() => {
-        router.push("/login");
-      }}
-    >
-      Login
-    </Button>
+  const { data, loading } = useMeQuery();
+
+  if (!data && loading) return null;
+
+  return data!.me ? (
+    <MenuAccount>
+      <Button className="flex items-center">
+        <AvatarUser
+          user={data?.me?.username}
+          size="18"
+          className="-mr-1 -ml-1 sm:mr-2 md:mr-2 lg:mr-2 xl:mr-2"
+        />
+        <span className="hidden sm:block">{data?.me?.username}</span>
+      </Button>
+    </MenuAccount>
+  ) : (
+    <>
+      <Button onClick={() => setShowModal(true)}>Login</Button>
+      <Modal title="Login" open={showModal} onClose={() => setShowModal(false)}>
+        <div className="m-4 space-y-2">
+          <Login />
+        </div>
+      </Modal>
+    </>
   );
 };

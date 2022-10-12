@@ -43,6 +43,11 @@ class UserResponse {
 
 @Resolver()
 export class UserResolver {
+  @Query(() => [User])
+  async users(): Promise<User[]> {
+    return await User.find();
+  }
+
   @Query(() => User, { nullable: true })
   async me(@Ctx() ctx: AppContext): Promise<User | null> {
     const { userId } = ctx.req.session;
