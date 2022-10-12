@@ -44,17 +44,15 @@ const New: NextPage = () => {
 
       <div className="w-full lg:w-4/12 lg:min-w-[321px]">
         <Block className="lg:fixed lg:w-[320px]">
-          <div className="p-4 leading-5 sm:leading-6">
-            <Button
-              onClick={() => setPreview(!preview)}
-              className="mb-2 block w-full"
-            >
-              {preview ? "Edit" : "Preview"}
-            </Button>
-            <Button className="mb-2 block w-full" primary>
-              Continue
-            </Button>
-          </div>
+          <Button
+            onClick={() => setPreview(!preview)}
+            className="mb-2 block w-full"
+          >
+            {preview ? "Edit" : "Preview"}
+          </Button>
+          <Button className="mb-2 block w-full" primary>
+            Continue
+          </Button>
         </Block>
       </div>
     </div>

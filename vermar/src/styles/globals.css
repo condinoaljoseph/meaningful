@@ -102,3 +102,7 @@
 }
 
 @import url("./markdown.css");
+
+.lazy-loading {
+  @apply animate-pulse-fast bg-skin-border;
+}

@@ -1,9 +1,19 @@
 import clsx from "clsx";
 import Image from "next/image";
 
-export const Avatar = ({ src, size }: { src: string; size?: string }) => {
+export const Avatar = ({
+  src,
+  size,
+  className = "",
+}: {
+  src: string;
+  size?: string;
+  className?: string;
+}) => {
   return (
-    <span className="flex shrink-0 items-center justify-center">
+    <span
+      className={clsx("flex shrink-0 items-center justify-center", className)}
+    >
       <Image
         className={clsx("rounded-full bg-skin-border")}
         src={src}

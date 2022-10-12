@@ -1,3 +1,4 @@
+import path from "path";
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { Post } from "./entities/Post";
@@ -12,4 +13,5 @@ export const AppDataSource = new DataSource({
   synchronize: true,
   logging: true,
   entities: [User, Post, Reaction],
+  migrations: [path.join(__dirname, "./migrations/*")],
 });
