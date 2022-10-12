@@ -6,10 +6,12 @@ export const PostsItem = ({
   title,
   content,
   id,
+  user,
 }: {
   title: string;
   content: string;
   id: number;
+  user: string;
 }) => {
   return (
     <Link href={`/post/${id}`}>
@@ -19,8 +21,8 @@ export const PostsItem = ({
             <div className="mb-2 flex items-center justify-between">
               <div className="flex items-center space-x-1">
                 <div className="flex items-center">
-                  <AvatarUser user="dern" size="28" />
-                  <span className="ml-2 text-skin-link">dern</span>
+                  <AvatarUser user={user} size="28" />
+                  <span className="ml-2 text-skin-link">{user}</span>
                 </div>
               </div>
             </div>

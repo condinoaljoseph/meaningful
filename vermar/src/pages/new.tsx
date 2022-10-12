@@ -9,7 +9,12 @@ import { Markdown } from "../components/ui/Markdown";
 import { TextArea } from "../components/ui/Textarea";
 
 const New: NextPage = () => {
-  const form = useForm();
+  const form = useForm({
+    defaultValues: {
+      title: "",
+      content: "",
+    },
+  });
   const source = form.watch("content");
   const title = form.watch("title");
 

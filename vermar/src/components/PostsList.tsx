@@ -23,6 +23,7 @@ export const PostsList = () => {
           id={post.id}
           title={post.title}
           content={post.content}
+          user={post.creator.username}
         />
       ))}
     </div>

@@ -35,7 +35,11 @@ export const Login = () => {
       }}
     >
       <Input placeholder="Username" {...form.register("username")} />
-      <Input placeholder="Password" {...form.register("password")} />
+      <Input
+        placeholder="Password"
+        type="password"
+        {...form.register("password")}
+      />
       <Button primary type="submit">
         Login
       </Button>

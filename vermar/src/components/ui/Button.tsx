@@ -40,7 +40,7 @@ export const Button = forwardRef<HTMLButtonElement, Props>(function Button(
       {...rest}
     >
       {icon}
-      <div>{children}</div>
+      {children}
     </button>
   );
 });

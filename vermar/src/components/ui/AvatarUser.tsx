@@ -2,11 +2,11 @@ import clsx from "clsx";
 import Image from "next/image";
 
 export const AvatarUser = ({
-  user,
+  user = "meaningful",
   size,
   className = "",
 }: {
-  user: string;
+  user?: string;
   size?: string;
   className?: string;
 }) => {
