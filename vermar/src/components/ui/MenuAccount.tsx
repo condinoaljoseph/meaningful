@@ -1,5 +1,5 @@
 import { useApolloClient } from "@apollo/client";
-import { Menu, Transition } from "@headlessui/react";
+import { Menu } from "@headlessui/react";
 import clsx from "clsx";
 import { ReactNode } from "react";
 import { useLogoutMutation } from "../../generated/graphql";
@@ -23,7 +23,7 @@ export const MenuAccount = ({ children }: { children: ReactNode }) => {
                   "cursor-pointer whitespace-nowrap px-3 py-2"
                 )}
               >
-                View Profile
+                View profile
               </div>
             )}
           </Menu.Item>

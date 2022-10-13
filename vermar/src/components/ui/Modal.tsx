@@ -50,14 +50,14 @@ export const Modal = ({
               <h3>{title}</h3>
             </div>
             <div className="modal-body">{children}</div>
-            {!hideClose ? (
+            {!hideClose && (
               <ButtonRounded
                 className="absolute right-3 top-[18px] !border-none"
                 onClick={onClose}
               >
                 <XMarkIcon className="w-[24px] h-[24px]" />
               </ButtonRounded>
-            ) : null}
+            )}
           </div>
         </Transition.Child>
       </Dialog>

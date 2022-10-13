@@ -17,7 +17,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 
   return (
     <div className="flex min-h-screen">
-      {showSidebar ? (
+      {showSidebar && (
         <div id="sidebar" className="flex flex-col">
           <div
             className={clsx(
@@ -28,7 +28,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
             <Sidebar className="border-r border-skin-border" />
           </div>
         </div>
-      ) : null}
+      )}
       <div className="relative flex w-screen min-w-0 shrink-0 flex-col sm:w-auto sm:shrink sm:grow">
         <div
           id="navbar"

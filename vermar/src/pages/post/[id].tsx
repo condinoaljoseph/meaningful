@@ -1,5 +1,9 @@
-import { BellAlertIcon } from "@heroicons/react/24/outline";
+import {
+  BellAlertIcon,
+  EllipsisHorizontalIcon,
+} from "@heroicons/react/24/outline";
 import type { NextPage } from "next";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { ButtonFollow } from "../../components/ButtonFollow";
 import { ButtonShare } from "../../components/ButtonShare";
@@ -19,6 +23,14 @@ const Post: NextPage = () => {
   });
 
   return (
+    <>
+      <Head>
+        <title>{data?.post?.title}</title>
+        <meta
+          property="og:image"
+          content="https://my-og-img.vercel.app/api/og?username=condinoaljoseph"
+        />
+      </Head>
     <div className="lg:flex">
       <div className="relative float-left w-full pr-0 lg:w-3/4 lg:pr-5">
         {!data && loading ? (
@@ -41,8 +53,9 @@ const Post: NextPage = () => {
                 <span className="ml-2 text-skin-link">
                   {data?.post?.creator.username}
                 </span>
-                <div className="inline-block h-full text-left !ml-auto pl-3">
+                <div className="inline-flex items-center h-full text-left !ml-auto pl-3">
                   <ButtonShare />
+                  <EllipsisHorizontalIcon className="ml-2 align-middle w-[1.2em] h-[1.2em]" />
                 </div>
               </div>
             </div>
@@ -88,6 +101,7 @@ const Post: NextPage = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
