@@ -13,7 +13,7 @@ export const NavbarAccount = () => {
 
   if (!data && loading) return null;
 
-  return data!.me ? (
+  return data?.me ? (
     <MenuAccount>
       <Button className="flex items-center">
         <AvatarUser

@@ -1,4 +1,7 @@
-import { BellAlertIcon } from "@heroicons/react/24/outline";
+import {
+  BellAlertIcon,
+  EllipsisHorizontalIcon,
+} from "@heroicons/react/24/outline";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { ButtonFollow } from "../../components/ButtonFollow";
@@ -41,8 +44,9 @@ const Post: NextPage = () => {
                 <span className="ml-2 text-skin-link">
                   {data?.post?.creator.username}
                 </span>
-                <div className="inline-block h-full text-left !ml-auto pl-3">
+                <div className="inline-flex items-center h-full text-left !ml-auto pl-3">
                   <ButtonShare />
+                  <EllipsisHorizontalIcon className="ml-2 align-middle w-[1.2em] h-[1.2em]" />
                 </div>
               </div>
             </div>

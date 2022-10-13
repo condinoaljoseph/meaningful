@@ -1,4 +1,4 @@
-import { Bars2Icon } from "@heroicons/react/24/outline";
+import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import Link from "next/link";
 import { useAppStore } from "../store/useAppStore";
@@ -20,7 +20,7 @@ export const Navbar = ({ className = "" }: { className?: string }) => {
               className="sm:hidden"
               onClick={() => setShowSidebar(!showSidebar)}
             >
-              <Bars2Icon className="w-[1em] h-[1em]" />
+              <EllipsisVerticalIcon className="w-[1em] h-[1em]" />
             </ButtonRounded>
             <Link href="/">
               <a className="-ml-3 hidden items-center sm:block text-[24px]">
