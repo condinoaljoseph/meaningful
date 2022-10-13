@@ -28,7 +28,7 @@ const Post: NextPage = () => {
         <title>{data?.post?.title}</title>
         <meta
           property="og:image"
-          content="https://meaningful.codes/api/og?username=condinoaljoseph"
+          content="https://staging.meaningful.codes/api/og?username=condinoaljoseph"
         />
       </Head>
     <div className="lg:flex">
