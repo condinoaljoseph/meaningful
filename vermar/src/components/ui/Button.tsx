@@ -5,6 +5,7 @@ import {
   forwardRef,
   ReactNode,
 } from "react";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 interface Props
   extends DetailedHTMLProps<
@@ -35,11 +36,11 @@ export const Button = forwardRef<HTMLButtonElement, Props>(function Button(
         },
         className
       )}
-      disabled={loading}
+      disabled={rest.disabled || loading}
       type={rest.type}
       {...rest}
     >
-      {icon}
+      {loading ? <LoadingSpinner /> : icon}
       {children}
     </button>
   );

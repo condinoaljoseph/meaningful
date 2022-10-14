@@ -3,17 +3,17 @@ import { useMeQuery } from "../generated/graphql";
 import { Login } from "./Login";
 import { AvatarUser } from "./ui/AvatarUser";
 import { Button } from "./ui/Button";
+import { LoadingSpinner } from "./ui/LoadingSpinner";
 import { MenuAccount } from "./ui/MenuAccount";
 import { Modal } from "./ui/Modal";
 
 export const NavbarAccount = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
-
   const { data, loading } = useMeQuery();
 
-  if (!data && loading) return null;
-
-  return data?.me ? (
+  return !data && loading ? (
+    <Button loading />
+  ) : data?.me ? (
     <MenuAccount>
       <Button className="flex items-center">
         <AvatarUser
