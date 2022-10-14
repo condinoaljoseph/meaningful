@@ -1,4 +1,3 @@
-import router from "next/router";
 import { useForm } from "react-hook-form";
 import { MeDocument, MeQuery, useLoginMutation } from "../generated/graphql";
 import { Button } from "./ui/Button";
