@@ -3,7 +3,6 @@ import {
   EllipsisHorizontalIcon,
 } from "@heroicons/react/24/outline";
 import type { NextPage } from "next";
-import Head from "next/head";
 import { useRouter } from "next/router";
 import { ButtonFollow } from "../../components/ButtonFollow";
 import { ButtonShare } from "../../components/ButtonShare";
@@ -23,14 +22,6 @@ const Post: NextPage = () => {
   });
 
   return (
-    <>
-      <Head>
-        <title>{data?.post?.title}</title>
-        <meta
-          property="og:image"
-          content={`https://staging.meaningful.codes/api/og?title=Post${id}`}
-        />
-      </Head>
     <div className="lg:flex">
       <div className="relative float-left w-full pr-0 lg:w-3/4 lg:pr-5">
         {!data && loading ? (
@@ -101,7 +92,6 @@ const Post: NextPage = () => {
         </div>
       </div>
     </div>
-    </>
   );
 };
 
