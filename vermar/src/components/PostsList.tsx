@@ -36,10 +36,8 @@ export const PostsList = () => {
     <>
       {!data && loading ? (
         <Block>
-          <div className="block px-4 py-4">
-            <div className="lazy-loading mb-2 rounded-md w-[80%] h-[20px]" />
-            <div className="lazy-loading rounded-md w-[50%] h-[20px]" />
-          </div>
+          <div className="lazy-loading mb-2 rounded-md w-[80%] h-[20px]" />
+          <div className="lazy-loading rounded-md w-[50%] h-[20px]" />
         </Block>
       ) : (
         <div className="space-y-4">
@@ -52,36 +50,42 @@ export const PostsList = () => {
               user={post.creator.username}
             />
           ))}
+
+          {data && data?.posts.hasMore ? (
+            <>
+              {!loadMoreRef.current ? (
+                <div className="px-4 text-center md:px-0">
+                  <Button
+                    className="w-full"
+                    loading={loading}
+                    onClick={() => {
+                      loadMoreRef.current = true;
+
+                      fetchMore({
+                        variables: {
+                          limit: variables?.limit,
+                          cursor:
+                            data.posts.posts[data.posts.posts.length - 1]
+                              .createdAt,
+                        },
+                      });
+                    }}
+                  >
+                    Load more
+                  </Button>
+                </div>
+              ) : (
+                <div ref={observe}>
+                  <Block>
+                    <div className="lazy-loading mb-2 rounded-md w-[80%] h-[20px]" />
+                    <div className="lazy-loading rounded-md w-[50%] h-[20px]" />
+                  </Block>
+                </div>
+              )}
+            </>
+          ) : null}
         </div>
       )}
-
-      {data && data?.posts.hasMore ? (
-        <div className="px-4 text-center md:px-0">
-          {!loadMoreRef.current ? (
-            <Button
-              className="mt-4 w-full"
-              loading={loading}
-              onClick={() => {
-                loadMoreRef.current = true;
-
-                fetchMore({
-                  variables: {
-                    limit: variables?.limit,
-                    cursor:
-                      data.posts.posts[data.posts.posts.length - 1].createdAt,
-                  },
-                });
-              }}
-            >
-              Load more
-            </Button>
-          ) : (
-            <div ref={observe} className="px-4 text-center md:px-0">
-              <LoadingSpinner />
-            </div>
-          )}
-        </div>
-      ) : null}
     </>
   );
 };
