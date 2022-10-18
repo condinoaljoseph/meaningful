@@ -1,0 +1,3 @@
+mutation AddReaction($value: Boolean!, $type: ReactionTypes!, $postId: Int!) {
+  addReaction(postId: $postId, type: $type, value: $value)
+}

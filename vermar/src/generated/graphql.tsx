@@ -23,13 +23,20 @@ export type FieldError = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addReaction: Scalars['Boolean'];
   createPost: Post;
   deletePost: Scalars['Boolean'];
   login: UserResponse;
   logout: Scalars['Boolean'];
-  react: Scalars['Boolean'];
   register: UserResponse;
   updatePost?: Maybe<Post>;
+};
+
+
+export type MutationAddReactionArgs = {
+  postId: Scalars['Int'];
+  type: ReactionTypes;
+  value: Scalars['Boolean'];
 };
 
 
@@ -45,13 +52,6 @@ export type MutationDeletePostArgs = {
 
 export type MutationLoginArgs = {
   options: UserPasswordInput;
-};
-
-
-export type MutationReactArgs = {
-  postId: Scalars['Int'];
-  type: Scalars['String'];
-  value: Scalars['Boolean'];
 };
 
 
@@ -108,6 +108,10 @@ export type QueryPostsArgs = {
   limit: Scalars['Int'];
 };
 
+export enum ReactionTypes {
+  Like = 'LIKE'
+}
+
 export type User = {
   __typename?: 'User';
   createdAt: Scalars['String'];
@@ -126,6 +130,15 @@ export type UserResponse = {
   errors?: Maybe<Array<FieldError>>;
   user?: Maybe<User>;
 };
+
+export type AddReactionMutationVariables = Exact<{
+  value: Scalars['Boolean'];
+  type: ReactionTypes;
+  postId: Scalars['Int'];
+}>;
+
+
+export type AddReactionMutation = { __typename?: 'Mutation', addReaction: boolean };
 
 export type CreatePostMutationVariables = Exact<{
   options: PostInput;
@@ -167,6 +180,39 @@ export type PostsQueryVariables = Exact<{
 export type PostsQuery = { __typename?: 'Query', posts: { __typename?: 'PaginatedPosts', hasMore: boolean, posts: Array<{ __typename?: 'Post', id: number, title: string, content: string, likes: number, createdAt: string, creator: { __typename?: 'User', username: string } }> } };
 
 
+export const AddReactionDocument = gql`
+    mutation AddReaction($value: Boolean!, $type: ReactionTypes!, $postId: Int!) {
+  addReaction(postId: $postId, type: $type, value: $value)
+}
+    `;
+export type AddReactionMutationFn = Apollo.MutationFunction<AddReactionMutation, AddReactionMutationVariables>;
+
+/**
+ * __useAddReactionMutation__
+ *
+ * To run a mutation, you first call `useAddReactionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddReactionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addReactionMutation, { data, loading, error }] = useAddReactionMutation({
+ *   variables: {
+ *      value: // value for 'value'
+ *      type: // value for 'type'
+ *      postId: // value for 'postId'
+ *   },
+ * });
+ */
+export function useAddReactionMutation(baseOptions?: Apollo.MutationHookOptions<AddReactionMutation, AddReactionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddReactionMutation, AddReactionMutationVariables>(AddReactionDocument, options);
+      }
+export type AddReactionMutationHookResult = ReturnType<typeof useAddReactionMutation>;
+export type AddReactionMutationResult = Apollo.MutationResult<AddReactionMutation>;
+export type AddReactionMutationOptions = Apollo.BaseMutationOptions<AddReactionMutation, AddReactionMutationVariables>;
 export const CreatePostDocument = gql`
     mutation CreatePost($options: PostInput!) {
   createPost(options: $options) {
