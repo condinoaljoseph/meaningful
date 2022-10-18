@@ -1,18 +1,14 @@
-import { Remarkable } from "remarkable";
-import { MouseEvent, useEffect, useState } from "react";
-import { Interweave } from "interweave";
+import DOMPurify from "dompurify";
+import { useEffect, useState } from "react";
 import { useCopy } from "../../composables/useCopy";
-
-const md = new Remarkable();
-const trimify = (value: string): string =>
-  value?.replace(/\n\s*\n/g, "\n\n").trim();
+import { marked } from "marked";
 
 export const Markdown = ({ source = "" }: { source?: string }) => {
   const [markdown, setMarkdown] = useState("");
   const { copyToClipboard } = useCopy();
 
   useEffect(() => {
-    setMarkdown(md.render(source));
+    setMarkdown(marked.parse(source));
   }, [source]);
 
   useEffect(() => {
@@ -38,12 +34,7 @@ export const Markdown = ({ source = "" }: { source?: string }) => {
 
   return (
     <div className="markdown-body break-words">
-      <Interweave
-        allowAttributes
-        allowElements
-        content={trimify(markdown)}
-        onClick={(event: MouseEvent<HTMLDivElement>) => event.stopPropagation()}
-      />
+      <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(markdown) }} />
     </div>
   );
 };
