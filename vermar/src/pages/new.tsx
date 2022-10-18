@@ -74,7 +74,7 @@ const New: NextPage = () => {
             type="submit"
             onClick={form.handleSubmit(onSubmit)}
           >
-            Continue
+            Publish
           </Button>
         </Block>
       </div>
