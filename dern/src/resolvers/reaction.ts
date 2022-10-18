@@ -1,16 +1,28 @@
-import { Arg, Ctx, Int, Mutation, Resolver, UseMiddleware } from "type-graphql";
+import {
+  Arg,
+  Ctx,
+  Int,
+  Mutation,
+  registerEnumType,
+  Resolver,
+  UseMiddleware,
+} from "type-graphql";
 import { AppContext } from "../types";
 import { isAuth } from "../middleware/isAuth";
 import { Reaction, ReactionTypes } from "../entities/Reaction";
 import { getConnection } from "typeorm";
 
+registerEnumType(ReactionTypes, {
+  name: "ReactionTypes", // this one is mandatory
+});
+
 @Resolver()
 export class ReactionResolver {
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
-  async react(
+  async addReaction(
     @Arg("postId", () => Int) postId: number,
-    @Arg("type") type: ReactionTypes,
+    @Arg("type", () => ReactionTypes) type: ReactionTypes,
     @Arg("value") value: boolean,
     @Ctx() ctx: AppContext
   ): Promise<boolean> {

@@ -13,7 +13,7 @@ export class Reaction extends BaseEntity {
   @Column()
   value: boolean;
 
-  @Column({ type: "varchar" })
+  @Column({ type: "enum", enum: ReactionTypes, default: ReactionTypes.LIKE })
   type: ReactionTypes;
 
   @Field()
