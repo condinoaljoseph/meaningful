@@ -3,8 +3,6 @@ import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 import { buildSchema } from "type-graphql";
-import { HelloResolver } from "./resolvers/hello";
-import { AppDataSource } from "./data-source";
 import { UserResolver } from "./resolvers/User";
 import session from "express-session";
 import Redis from "ioredis";
@@ -13,12 +11,26 @@ import { COOKIE_NAME, __prod__ } from "./constants";
 import { PostResolver } from "./resolvers/post";
 import { ReactionResolver } from "./resolvers/reaction";
 import cors from "cors";
+import { User } from "./entities/User";
+import { Post } from "./entities/Post";
+import { Reaction } from "./entities/Reaction";
+import { createConnection } from "typeorm";
+import path from "path";
 
 const main = async () => {
   const redis = new Redis();
   const RedisStore = connectRedis(session);
 
-  await AppDataSource.initialize();
+  await createConnection({
+    type: "postgres",
+    username: "postgres",
+    password: "postgres",
+    database: "meaningful",
+    synchronize: true,
+    logging: true,
+    entities: [User, Post, Reaction],
+    migrations: [path.join(__dirname, "./migrations/*")],
+  });
 
   const app = express();
 
@@ -47,7 +59,7 @@ const main = async () => {
 
   const server = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, UserResolver, PostResolver, ReactionResolver],
+      resolvers: [UserResolver, PostResolver, ReactionResolver],
       validate: false,
     }),
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
