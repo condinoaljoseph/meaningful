@@ -22,29 +22,29 @@ const New: NextPage = () => {
 
   return (
     <div className="lg:flex">
-      <div className="relative float-left w-full pr-0 lg:w-3/4 lg:pr-5">
-        {!preview ? (
-          <>
-            <div className="px-4 md:px-0">
+      <div className="relative w-full pr-0 lg:w-3/4 lg:pr-5">
+        <div className="mb-5 px-4 md:px-0">
+          {!preview ? (
+            <>
               <h1 className="mb-4">Create a post</h1>
-            </div>
-            <Form form={form} onSubmit={(data) => console.log(data)}>
-              <Input label="Title" {...form.register("title")} />
-              <TextArea
-                label="Content"
-                {...form.register("content")}
-                count={source.length}
-              />
-            </Form>
-          </>
-        ) : (
-          <>
-            <h1 className="w-full break-all">{title || "Untitled"}</h1>
-            <div className="mb-2">
-              <Markdown source={source} />
-            </div>
-          </>
-        )}
+              <Form form={form} onSubmit={(data) => console.log(data)}>
+                <Input label="Title" {...form.register("title")} />
+                <TextArea
+                  label="Content"
+                  {...form.register("content")}
+                  count={source.length}
+                />
+              </Form>
+            </>
+          ) : (
+            <>
+              <h1 className="w-full break-all">{title || "Untitled"}</h1>
+              <div className="mb-2">
+                <Markdown source={source} />
+              </div>
+            </>
+          )}
+        </div>
       </div>
 
       <div className="w-full lg:w-4/12 lg:min-w-[321px]">
