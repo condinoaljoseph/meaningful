@@ -8,10 +8,10 @@ import {
   Resolver,
   UseMiddleware,
 } from "type-graphql";
-import { AppDataSource } from "../data-source";
 import { Post } from "../entities/Post";
 import { AppContext } from "../types";
 import { isAuth } from "../middleware/isAuth";
+import { getConnection } from "typeorm";
 
 @InputType()
 class PostInput {
@@ -25,16 +25,29 @@ class PostInput {
 @Resolver()
 export class PostResolver {
   @Query(() => [Post])
-  async posts(): Promise<Post[]> {
-    return await AppDataSource.getRepository(Post)
+  async posts(
+    @Arg("limit") limit: number,
+    @Arg("cursor", () => String, { nullable: true }) cursor: string
+  ): Promise<Post[]> {
+    const qb = getConnection()
+      .getRepository(Post)
       .createQueryBuilder("p")
       .innerJoinAndSelect("p.creator", "u", 'u.id = p."creatorId"')
-      .getMany();
+      .take(limit);
+
+    if (cursor) {
+      qb.where('p."createdAt" < :cursor', {
+        cursor: new Date(parseInt(cursor)),
+      });
+    }
+
+    return await qb.getMany();
   }
 
   @Query(() => Post, { nullable: true })
-  async post(@Arg("id") id: number): Promise<Post | null> {
-    return await AppDataSource.getRepository(Post)
+  async post(@Arg("id") id: number): Promise<Post | undefined> {
+    return await getConnection()
+      .getRepository(Post)
       .createQueryBuilder("p")
       .innerJoinAndSelect("p.creator", "u", 'u.id = p."creatorId"')
       .where("p.id = :id", { id })
@@ -61,7 +74,8 @@ export class PostResolver {
     @Arg("content") content: string,
     @Ctx() ctx: AppContext
   ): Promise<Post> {
-    const result = await AppDataSource.createQueryBuilder()
+    const result = await getConnection()
+      .createQueryBuilder()
       .update(Post)
       .set({ title, content })
       .where('id = :id and "creatorId" = :creatorId', {

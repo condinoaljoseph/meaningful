@@ -1,8 +1,8 @@
 import { Arg, Ctx, Int, Mutation, Resolver, UseMiddleware } from "type-graphql";
-import { AppDataSource } from "../data-source";
 import { AppContext } from "../types";
 import { isAuth } from "../middleware/isAuth";
 import { Reaction, ReactionTypes } from "../entities/Reaction";
+import { getConnection } from "typeorm";
 
 @Resolver()
 export class ReactionResolver {
@@ -16,14 +16,16 @@ export class ReactionResolver {
   ): Promise<boolean> {
     const { userId } = ctx.req.session;
 
-    const reaction = await Reaction.findOneBy({
-      postId,
-      userId,
-      type,
+    const reaction = await Reaction.findOne({
+      where: {
+        postId,
+        userId,
+        type,
+      },
     });
 
     if (reaction && reaction.value !== value) {
-      await AppDataSource.transaction(async (tem) => {
+      await getConnection().transaction(async (tem) => {
         await tem.query(
           `
               update reaction
@@ -43,7 +45,7 @@ export class ReactionResolver {
         );
       });
     } else if (!reaction) {
-      await AppDataSource.transaction(async (tem) => {
+      await getConnection().transaction(async (tem) => {
         await tem.query(
           `
               insert into reaction ("userId", "postId", type, value) 

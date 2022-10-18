@@ -10,9 +10,9 @@ import {
   Ctx,
 } from "type-graphql";
 import argon2 from "argon2";
-import { AppDataSource } from "../data-source";
 import { AppContext } from "../types";
 import { COOKIE_NAME } from "../constants";
+import { getConnection } from "typeorm";
 
 @InputType()
 class UserPasswordInput {
@@ -49,14 +49,14 @@ export class UserResolver {
   }
 
   @Query(() => User, { nullable: true })
-  async me(@Ctx() ctx: AppContext): Promise<User | null> {
+  async me(@Ctx() ctx: AppContext) {
     const { userId } = ctx.req.session;
 
     if (!userId) {
       return null;
     }
 
-    return await User.findOneBy({ id: userId });
+    return await User.findOne(userId);
   }
 
   @Mutation(() => UserResponse)
@@ -64,7 +64,7 @@ export class UserResolver {
     @Arg("options") options: UserPasswordInput,
     @Ctx() ctx: AppContext
   ) {
-    const user = await User.findOneBy({ username: options.username });
+    const user = await User.findOne({ where: { username: options.username } });
     if (!user) {
       return {
         errors: [
@@ -125,7 +125,8 @@ export class UserResolver {
     let user;
 
     try {
-      const result = await AppDataSource.createQueryBuilder()
+      const result = await getConnection()
+        .createQueryBuilder()
         .insert()
         .into(User)
         .values({
