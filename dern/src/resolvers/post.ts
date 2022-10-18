@@ -3,7 +3,9 @@ import {
   Ctx,
   Field,
   InputType,
+  Int,
   Mutation,
+  ObjectType,
   Query,
   Resolver,
   UseMiddleware,
@@ -22,18 +24,29 @@ class PostInput {
   content: string;
 }
 
+@ObjectType()
+class PaginatedPosts {
+  @Field(() => [Post])
+  posts: Post[];
+
+  @Field()
+  hasMore: boolean;
+}
+
 @Resolver()
 export class PostResolver {
-  @Query(() => [Post])
+  @Query(() => PaginatedPosts)
   async posts(
-    @Arg("limit") limit: number,
+    @Arg("limit", () => Int) limit: number,
     @Arg("cursor", () => String, { nullable: true }) cursor: string
-  ): Promise<Post[]> {
+  ): Promise<PaginatedPosts> {
+    const realLimit = Math.max(5, limit);
+
     const qb = getConnection()
       .getRepository(Post)
       .createQueryBuilder("p")
       .innerJoinAndSelect("p.creator", "u", 'u.id = p."creatorId"')
-      .take(limit);
+      .take(realLimit + 1);
 
     if (cursor) {
       qb.where('p."createdAt" < :cursor', {
@@ -41,7 +54,12 @@ export class PostResolver {
       });
     }
 
-    return await qb.getMany();
+    const posts = await qb.getMany();
+
+    return {
+      posts: posts.slice(0, realLimit),
+      hasMore: posts.length === realLimit + 1,
+    };
   }
 
   @Query(() => Post, { nullable: true })
