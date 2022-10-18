@@ -4,13 +4,17 @@ import {
 } from "@heroicons/react/24/outline";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
+import { useInView } from "react-cool-inview";
 import { ButtonFollow } from "../../components/ButtonFollow";
 import { ButtonShare } from "../../components/ButtonShare";
 import { AvatarUser } from "../../components/ui/AvatarUser";
 import { Block } from "../../components/ui/Block";
 import { ButtonRounded } from "../../components/ui/ButtonRounded";
 import { Markdown } from "../../components/ui/Markdown";
-import { usePostQuery } from "../../generated/graphql";
+import { ReactionTypes, usePostQuery } from "../../generated/graphql";
+import clsx from "clsx";
+import { ButtonComment } from "../../components/ButtonComment";
+import { ButtonReact } from "../../components/ButtonReact";
 
 const Post: NextPage = () => {
   const {
@@ -21,9 +25,11 @@ const Post: NextPage = () => {
     variables: { id: parseInt(id as string) },
   });
 
+  const { observe, inView } = useInView();
+
   return (
     <div className="lg:flex">
-      <div className="relative float-left w-full pr-0 lg:w-3/4 lg:pr-5">
+      <div className="relative w-full pr-0 lg:w-3/4 lg:pr-5">
         {!data && loading ? (
           <div className="space-y-3">
             <div className="lazy-loading rounded-md w-full h-[34px]" />
@@ -51,9 +57,30 @@ const Post: NextPage = () => {
               </div>
             </div>
 
-            <div className="relative">
-              <div className="absolute bottom-0 h-[80px] w-full" />
-              <Markdown source={data?.post?.content} />
+            <Markdown source={data?.post?.content} />
+
+            <div
+              className={clsx(
+                !inView ? "sticky flex bottom-3 justify-center" : "hidden"
+              )}
+            >
+              <div className="bg-skin-bg text-skin-text shadow-lg h-[46px] px-[22px] rounded-[23px] flex items-center space-x-4">
+                <ButtonReact
+                  postId={data?.post?.id || 0}
+                  type={ReactionTypes.Like}
+                  reacts={data?.post?.likes}
+                />
+                <ButtonComment />
+              </div>
+            </div>
+
+            <div ref={observe} className="py-4 flex items-center space-x-4">
+              <ButtonReact
+                postId={data?.post?.id || 0}
+                type={ReactionTypes.Like}
+                reacts={data?.post?.likes}
+              />
+              <ButtonComment />
             </div>
           </div>
         )}
