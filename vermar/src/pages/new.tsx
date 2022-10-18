@@ -1,24 +1,37 @@
 import type { NextPage } from "next";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Block } from "../components/ui/Block";
 import { Button } from "../components/ui/Button";
 import { Form } from "../components/ui/Form";
 import { Input } from "../components/ui/Input";
 import { Markdown } from "../components/ui/Markdown";
 import { TextArea } from "../components/ui/Textarea";
+import { PostInput, useCreatePostMutation } from "../generated/graphql";
 
 const New: NextPage = () => {
-  const form = useForm({
+  const form = useForm<PostInput>({
     defaultValues: {
       title: "",
       content: "",
     },
   });
+
   const source = form.watch("content");
   const title = form.watch("title");
 
   const [preview, setPreview] = useState<boolean>(false);
+
+  const [createPost] = useCreatePostMutation();
+
+  const onSubmit: SubmitHandler<PostInput> = async (data) => {
+    await createPost({
+      variables: { options: data },
+      update: (cache) => {
+        cache.evict({ fieldName: "posts:{}" });
+      },
+    });
+  };
 
   return (
     <div className="lg:flex">
@@ -27,7 +40,7 @@ const New: NextPage = () => {
           {!preview ? (
             <>
               <h1 className="mb-4">Create a post</h1>
-              <Form form={form} onSubmit={(data) => console.log(data)}>
+              <Form form={form} onSubmit={onSubmit}>
                 <Input label="Title" {...form.register("title")} />
                 <TextArea
                   label="Content"
@@ -55,7 +68,12 @@ const New: NextPage = () => {
           >
             {preview ? "Edit" : "Preview"}
           </Button>
-          <Button className="mb-2 block w-full" primary>
+          <Button
+            className="mb-2 block w-full"
+            primary
+            type="submit"
+            onClick={form.handleSubmit(onSubmit)}
+          >
             Continue
           </Button>
         </Block>
