@@ -46,7 +46,8 @@ export class PostResolver {
       .getRepository(Post)
       .createQueryBuilder("p")
       .innerJoinAndSelect("p.creator", "u", 'u.id = p."creatorId"')
-      .take(realLimit + 1);
+      .orderBy('p."createdAt"', "DESC")
+      .limit(realLimit + 1);
 
     if (cursor) {
       qb.where('p."createdAt" < :cursor', {
