@@ -1,15 +1,10 @@
-import {
-  ArrowUpTrayIcon,
-  BellAlertIcon,
-  EllipsisHorizontalIcon,
-} from "@heroicons/react/24/outline";
+import { BellAlertIcon } from "@heroicons/react/24/outline";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useInView } from "react-cool-inview";
 import clsx from "clsx";
 import { ButtonComment } from "../../../components/ButtonComment";
 import { ButtonFollow } from "../../../components/ButtonFollow";
-import { ButtonIcon } from "../../../components/ButtonIcon";
 import { ButtonReact } from "../../../components/ButtonReact";
 import { ButtonShare } from "../../../components/ButtonShare";
 import { AvatarUser } from "../../../components/ui/AvatarUser";
@@ -55,7 +50,7 @@ const Post: NextPage = () => {
                   <ButtonShare />
                   <ButtonMore
                     postId={data?.post?.id || 0}
-                    user={data?.post?.creator.username || ""}
+                    username={data?.post?.creator.username || ""}
                   />
                 </div>
               </div>
@@ -77,7 +72,7 @@ const Post: NextPage = () => {
                 <ButtonComment />
                 <ButtonMore
                   postId={data?.post?.id || 0}
-                  user={data?.post?.creator.username || ""}
+                  username={data?.post?.creator.username || ""}
                   position="center-top"
                 />
               </div>
@@ -93,12 +88,10 @@ const Post: NextPage = () => {
                 <ButtonComment />
               </div>
               <div className="flex items-center space-x-4">
-                <ButtonIcon
-                  icon={<ArrowUpTrayIcon className="w-[1em] h-[1em]" />}
-                />
+                <ButtonShare position="top-right" />
                 <ButtonMore
                   postId={data?.post?.id || 0}
-                  user={data?.post?.creator.username || ""}
+                  username={data?.post?.creator.username || ""}
                   position="top-right"
                 />
               </div>

@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import Error from "next/error";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -13,9 +14,11 @@ import {
   usePostQuery,
   useUpdatePostMutation,
 } from "../../../generated/graphql";
+import { useAppPersistStore } from "../../../store/useAppStore";
 
 const Edit: NextPage = () => {
   const { query, back } = useRouter();
+  const user = useAppPersistStore((state) => state.user);
 
   const { data, loading } = usePostQuery({
     variables: { id: parseInt(query.id as string) },
@@ -61,6 +64,10 @@ const Edit: NextPage = () => {
         <div className="lazy-loading rounded-md w-[65px] h-[28px]" />
       </div>
     );
+  }
+
+  if (data?.post?.creatorId !== user?.id) {
+    return <Error statusCode={404} />;
   }
 
   return (
