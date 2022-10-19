@@ -1,4 +1,5 @@
 import {
+  ArrowUpTrayIcon,
   BellAlertIcon,
   EllipsisHorizontalIcon,
 } from "@heroicons/react/24/outline";
@@ -15,6 +16,7 @@ import { ReactionTypes, usePostQuery } from "../../generated/graphql";
 import clsx from "clsx";
 import { ButtonComment } from "../../components/ButtonComment";
 import { ButtonReact } from "../../components/ButtonReact";
+import { ButtonIcon } from "../../components/ButtonIcon";
 
 const Post: NextPage = () => {
   const {
@@ -71,16 +73,29 @@ const Post: NextPage = () => {
                   reacts={data?.post?.likes}
                 />
                 <ButtonComment />
+                <ButtonIcon
+                  icon={<EllipsisHorizontalIcon className="w-[1em] h-[1em]" />}
+                />
               </div>
             </div>
 
-            <div ref={observe} className="py-4 flex items-center space-x-4">
-              <ButtonReact
-                postId={data?.post?.id || 0}
-                type={ReactionTypes.Like}
-                reacts={data?.post?.likes}
-              />
-              <ButtonComment />
+            <div ref={observe} className="py-4 flex justify-between">
+              <div className="flex items-center space-x-4">
+                <ButtonReact
+                  postId={data?.post?.id || 0}
+                  type={ReactionTypes.Like}
+                  reacts={data?.post?.likes}
+                />
+                <ButtonComment />
+              </div>
+              <div className="flex items-center space-x-4">
+                <ButtonIcon
+                  icon={<ArrowUpTrayIcon className="w-[1em] h-[1em]" />}
+                />
+                <ButtonIcon
+                  icon={<EllipsisHorizontalIcon className="w-[1em] h-[1em]" />}
+                />
+              </div>
             </div>
           </div>
         )}

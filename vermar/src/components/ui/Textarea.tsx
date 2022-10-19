@@ -1,7 +1,6 @@
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import { ComponentProps, forwardRef, useId } from "react";
-import { useForm, useFormContext } from "react-hook-form";
 
 import { FieldError } from "./Form";
 
