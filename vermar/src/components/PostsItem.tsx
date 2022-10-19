@@ -14,7 +14,7 @@ export const PostsItem = ({
   user: string;
 }) => {
   return (
-    <Link href={`/post/${id}`}>
+    <Link href={`/${user}/${id}`}>
       <a className="block text-skin-text">
         <Block className="hover:border-skin-text">
           <div>

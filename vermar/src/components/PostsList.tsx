@@ -3,7 +3,6 @@ import { usePostsQuery } from "../generated/graphql";
 import { PostsItem } from "./PostsItem";
 import { Block } from "./ui/Block";
 import { Button } from "./ui/Button";
-import { LoadingSpinner } from "./ui/LoadingSpinner";
 import { useInView } from "react-cool-inview";
 
 export const PostsList = () => {

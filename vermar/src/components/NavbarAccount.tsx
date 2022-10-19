@@ -3,7 +3,6 @@ import { useMeQuery } from "../generated/graphql";
 import { Login } from "./Login";
 import { AvatarUser } from "./ui/AvatarUser";
 import { Button } from "./ui/Button";
-import { LoadingSpinner } from "./ui/LoadingSpinner";
 import { MenuAccount } from "./ui/MenuAccount";
 import { Modal } from "./ui/Modal";
 

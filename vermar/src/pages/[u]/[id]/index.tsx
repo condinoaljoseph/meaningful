@@ -1,28 +1,29 @@
 import {
+  ArrowUpTrayIcon,
   BellAlertIcon,
   EllipsisHorizontalIcon,
 } from "@heroicons/react/24/outline";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useInView } from "react-cool-inview";
-import { ButtonFollow } from "../../components/ButtonFollow";
-import { ButtonShare } from "../../components/ButtonShare";
-import { AvatarUser } from "../../components/ui/AvatarUser";
-import { Block } from "../../components/ui/Block";
-import { ButtonRounded } from "../../components/ui/ButtonRounded";
-import { Markdown } from "../../components/ui/Markdown";
-import { ReactionTypes, usePostQuery } from "../../generated/graphql";
 import clsx from "clsx";
-import { ButtonComment } from "../../components/ButtonComment";
-import { ButtonReact } from "../../components/ButtonReact";
+import { ButtonComment } from "../../../components/ButtonComment";
+import { ButtonFollow } from "../../../components/ButtonFollow";
+import { ButtonIcon } from "../../../components/ButtonIcon";
+import { ButtonReact } from "../../../components/ButtonReact";
+import { ButtonShare } from "../../../components/ButtonShare";
+import { AvatarUser } from "../../../components/ui/AvatarUser";
+import { Block } from "../../../components/ui/Block";
+import { ButtonRounded } from "../../../components/ui/ButtonRounded";
+import { Markdown } from "../../../components/ui/Markdown";
+import { usePostQuery, ReactionTypes } from "../../../generated/graphql";
+import { ButtonMore } from "../../../components/ButtonMore";
 
 const Post: NextPage = () => {
-  const {
-    query: { id },
-  } = useRouter();
+  const { query } = useRouter();
 
   const { data, loading } = usePostQuery({
-    variables: { id: parseInt(id as string) },
+    variables: { id: parseInt(query.id as string) },
   });
 
   const { observe, inView } = useInView();
@@ -46,13 +47,16 @@ const Post: NextPage = () => {
               <div className="mb-1 flex items-center sm:mb-0">
                 <AvatarUser user={data?.post?.creator.username} size="28" />
               </div>
-              <div className="flex grow items-center space-x-1">
+              <div className="flex grow items-center space-x-1 justify-between">
                 <span className="ml-2 text-skin-link">
                   {data?.post?.creator.username}
                 </span>
-                <div className="inline-flex items-center h-full text-left !ml-auto pl-3">
+                <div className="flex items-center space-x-4">
                   <ButtonShare />
-                  <EllipsisHorizontalIcon className="ml-2 align-middle w-[1.2em] h-[1.2em]" />
+                  <ButtonMore
+                    postId={data?.post?.id || 0}
+                    user={data?.post?.creator.username || ""}
+                  />
                 </div>
               </div>
             </div>
@@ -71,16 +75,33 @@ const Post: NextPage = () => {
                   reacts={data?.post?.likes}
                 />
                 <ButtonComment />
+                <ButtonMore
+                  postId={data?.post?.id || 0}
+                  user={data?.post?.creator.username || ""}
+                  position="center-top"
+                />
               </div>
             </div>
 
-            <div ref={observe} className="py-4 flex items-center space-x-4">
-              <ButtonReact
-                postId={data?.post?.id || 0}
-                type={ReactionTypes.Like}
-                reacts={data?.post?.likes}
-              />
-              <ButtonComment />
+            <div ref={observe} className="py-4 flex justify-between">
+              <div className="flex items-center space-x-4">
+                <ButtonReact
+                  postId={data?.post?.id || 0}
+                  type={ReactionTypes.Like}
+                  reacts={data?.post?.likes}
+                />
+                <ButtonComment />
+              </div>
+              <div className="flex items-center space-x-4">
+                <ButtonIcon
+                  icon={<ArrowUpTrayIcon className="w-[1em] h-[1em]" />}
+                />
+                <ButtonMore
+                  postId={data?.post?.id || 0}
+                  user={data?.post?.creator.username || ""}
+                  position="top-right"
+                />
+              </div>
             </div>
           </div>
         )}

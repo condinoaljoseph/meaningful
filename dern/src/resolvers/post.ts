@@ -64,7 +64,7 @@ export class PostResolver {
   }
 
   @Query(() => Post, { nullable: true })
-  async post(@Arg("id") id: number): Promise<Post | undefined> {
+  async post(@Arg("id", () => Int) id: number): Promise<Post | undefined> {
     return await getConnection()
       .getRepository(Post)
       .createQueryBuilder("p")
@@ -88,7 +88,7 @@ export class PostResolver {
   @Mutation(() => Post, { nullable: true })
   @UseMiddleware(isAuth)
   async updatePost(
-    @Arg("id") id: number,
+    @Arg("id", () => Int) id: number,
     @Arg("title") title: string,
     @Arg("content") content: string,
     @Ctx() ctx: AppContext
