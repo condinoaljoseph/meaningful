@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useMeQuery } from "../generated/graphql";
+import { useAppPersistStore } from "../store/useAppStore";
 import { Login } from "./Login";
 import { AvatarUser } from "./ui/AvatarUser";
 import { Button } from "./ui/Button";
@@ -8,7 +9,17 @@ import { Modal } from "./ui/Modal";
 
 export const NavbarAccount = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
-  const { data, loading } = useMeQuery();
+  const setUser = useAppPersistStore((state) => state.setUser);
+
+  const { data, loading } = useMeQuery({
+    onCompleted: (data) => {
+      if (!data.me) {
+        setUser(null);
+      }
+
+      setUser(data?.me);
+    },
+  });
 
   return !data && loading ? (
     <Button loading />
