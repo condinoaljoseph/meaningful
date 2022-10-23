@@ -71,11 +71,12 @@ const Post = () => {
                   !inView ? "sticky flex bottom-3 justify-center" : "hidden"
                 )}
               >
-                <div className="bg-skin-bg text-skin-text shadow-lg h-[46px] px-[22px] rounded-[23px] flex items-center space-x-4">
+                <div className="bg-skin-bg border border-skin-border text-skin-text shadow-lg h-[46px] px-[22px] rounded-[23px] flex items-center space-x-4">
                   <ButtonReact
                     postId={data?.post?.id!}
                     type={ReactionTypes.Like}
                     reacts={data?.post?.likes}
+                    reacted={data?.post?.likeStatus}
                   />
                   <ButtonComment />
                   <ButtonMore
@@ -92,6 +93,7 @@ const Post = () => {
                     postId={data?.post?.id!}
                     type={ReactionTypes.Like}
                     reacts={data?.post?.likes}
+                    reacted={data?.post?.likeStatus}
                   />
                   <ButtonComment />
                 </div>

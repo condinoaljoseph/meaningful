@@ -6,6 +6,7 @@ query Post($id: Int!) {
     creatorId
     likes
     createdAt
+    likeStatus
     creator {
       username
     }

@@ -2,18 +2,21 @@ import {
   Arg,
   Ctx,
   Field,
+  FieldResolver,
   InputType,
   Int,
   Mutation,
   ObjectType,
   Query,
   Resolver,
+  Root,
   UseMiddleware,
 } from "type-graphql";
 import { Post } from "../entities/Post";
 import { AppContext } from "../types";
 import { isAuth } from "../middleware/isAuth";
 import { getConnection } from "typeorm";
+import { User } from "../entities/User";
 
 @InputType()
 class PostInput {
@@ -33,8 +36,38 @@ class PaginatedPosts {
   hasMore: boolean;
 }
 
-@Resolver()
+@Resolver(Post)
 export class PostResolver {
+  @FieldResolver(() => User)
+  creator(@Root() post: Post) {
+    return User.findOne(post.creatorId);
+  }
+
+  @FieldResolver(() => Boolean)
+  async likeStatus(
+    @Root() post: Post,
+    @Ctx() ctx: AppContext
+  ): Promise<Boolean> {
+    const { userId } = ctx.req.session;
+
+    if (userId) {
+      const result = await getConnection().query(
+        `
+        select r.value from reaction r where "userId" = $1 and "postId" = $2
+      `,
+        [userId, post.id]
+      );
+
+      if (result.length === 0) {
+        return false;
+      }
+
+      return result[0].value;
+    }
+
+    return false;
+  }
+
   @Query(() => PaginatedPosts)
   async posts(
     @Arg("limit", () => Int) limit: number,
@@ -45,7 +78,6 @@ export class PostResolver {
     const qb = getConnection()
       .getRepository(Post)
       .createQueryBuilder("p")
-      .innerJoinAndSelect("p.creator", "u", 'u.id = p."creatorId"')
       .orderBy('p."createdAt"', "DESC")
       .limit(realLimit + 1);
 
@@ -65,12 +97,7 @@ export class PostResolver {
 
   @Query(() => Post, { nullable: true })
   async post(@Arg("id", () => Int) id: number): Promise<Post | undefined> {
-    return await getConnection()
-      .getRepository(Post)
-      .createQueryBuilder("p")
-      .innerJoinAndSelect("p.creator", "u", 'u.id = p."creatorId"')
-      .where("p.id = :id", { id })
-      .getOne();
+    return await Post.findOne(id, { relations: ["creator"] });
   }
 
   @Mutation(() => Post)

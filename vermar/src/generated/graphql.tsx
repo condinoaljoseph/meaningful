@@ -80,6 +80,7 @@ export type Post = {
   creatorId: Scalars['Float'];
   id: Scalars['Float'];
   likes: Scalars['Float'];
+  likeStatus: Scalars['Boolean'];
   title: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -178,7 +179,7 @@ export type PostQueryVariables = Exact<{
 }>;
 
 
-export type PostQuery = { __typename?: 'Query', post?: { __typename?: 'Post', id: number, title: string, content: string, creatorId: number, likes: number, createdAt: string, creator: { __typename?: 'User', username: string } } | null };
+export type PostQuery = { __typename?: 'Query', post?: { __typename?: 'Post', id: number, title: string, content: string, creatorId: number, likes: number, createdAt: string, likeStatus: boolean, creator: { __typename?: 'User', username: string } } | null };
 
 export type PostsQueryVariables = Exact<{
   limit: Scalars['Int'];
@@ -186,7 +187,7 @@ export type PostsQueryVariables = Exact<{
 }>;
 
 
-export type PostsQuery = { __typename?: 'Query', posts: { __typename?: 'PaginatedPosts', hasMore: boolean, posts: Array<{ __typename?: 'Post', id: number, title: string, content: string, likes: number, createdAt: string, creator: { __typename?: 'User', username: string } }> } };
+export type PostsQuery = { __typename?: 'Query', posts: { __typename?: 'PaginatedPosts', hasMore: boolean, posts: Array<{ __typename?: 'Post', id: number, title: string, content: string, likes: number, createdAt: string, likeStatus: boolean, creator: { __typename?: 'User', username: string } }> } };
 
 
 export const AddReactionDocument = gql`
@@ -412,6 +413,7 @@ export const PostDocument = gql`
     creatorId
     likes
     createdAt
+    likeStatus
     creator {
       username
     }
@@ -455,6 +457,7 @@ export const PostsDocument = gql`
       content
       likes
       createdAt
+      likeStatus
       creator {
         username
       }
