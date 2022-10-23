@@ -10,8 +10,8 @@ export const ButtonMore = ({
   postId,
   position = "bottom-right",
 }: {
-  username: string;
-  postId: number;
+  username?: string;
+  postId?: number;
   position?: "bottom-right" | "top-right" | "center-top";
 }) => {
   const { push } = useRouter();
@@ -20,9 +20,7 @@ export const ButtonMore = ({
   return (
     <Menu as="div" className="relative">
       <Menu.Button className="flex items-center rounded-full p-[6px] text-md text-skin-text transition-colors duration-200 hover:text-skin-link">
-        <ButtonIcon
-          icon={<EllipsisHorizontalIcon className="w-[1em] h-[1em]" />}
-        />
+        <EllipsisHorizontalIcon className="w-[1em] h-[1em]" />
       </Menu.Button>
       <Menu.Items
         className={clsx(

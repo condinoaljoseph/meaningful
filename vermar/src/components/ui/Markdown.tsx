@@ -1,15 +1,10 @@
-import DOMPurify from "dompurify";
-import { useEffect, useState } from "react";
+import DOMPurify from "isomorphic-dompurify";
+import { useEffect } from "react";
 import { useCopy } from "../../composables/useCopy";
 import { marked } from "marked";
 
 export const Markdown = ({ source = "" }: { source?: string }) => {
-  const [markdown, setMarkdown] = useState("");
   const { copyToClipboard } = useCopy();
-
-  useEffect(() => {
-    setMarkdown(marked.parse(source));
-  }, [source]);
 
   useEffect(() => {
     const body = document.querySelector(".markdown-body");
@@ -29,12 +24,15 @@ export const Markdown = ({ source = "" }: { source?: string }) => {
         });
         code.appendChild(copyButton);
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [markdown]);
+  }, [source, copyToClipboard]);
 
   return (
     <div className="markdown-body break-words">
-      <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(markdown) }} />
+      <div
+        dangerouslySetInnerHTML={{
+          __html: DOMPurify.sanitize(marked.parse(source)),
+        }}
+      />
     </div>
   );
 };

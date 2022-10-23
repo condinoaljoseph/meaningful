@@ -10,7 +10,9 @@ export const MenuAccount = ({ children }: { children: ReactNode }) => {
 
   return (
     <Menu as="div" className="relative inline-block h-full text-left">
-      <Menu.Button className="h-full">{children}</Menu.Button>
+      <Menu.Button className="button px-[22px] border border-skin-border bg-transparent text-skin-link text-[18px] rounded-[23px] h-[46px] flex items-center hover:border-skin-text">
+        {children}
+      </Menu.Button>
       <Menu.Items className="overflow-hidden absolute right-0 top-[55px] rounded-2xl border bg-skin-header-bg shadow-lg outline-none">
         <div className="no-scrollbar max-h-[300px] overflow-auto">
           <Menu.Item>
