@@ -6,6 +6,7 @@ query Posts($limit: Int!, $cursor: String) {
       content
       likes
       createdAt
+      likeStatus
       creator {
         username
       }
