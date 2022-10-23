@@ -1,10 +1,15 @@
 import { useRouter } from "next/router";
-import type { NextPage } from "next";
+import { Layout } from "../../components/Layout";
+import withApollo from "../../utils/withApollo";
 
-const Post: NextPage = () => {
+const Post = () => {
   const { query } = useRouter();
 
-  return <h1>hello {query.u}</h1>;
+  return (
+    <Layout>
+      <h1>hello {query.u}</h1>
+    </Layout>
+  );
 };
 
-export default Post;
+export default withApollo({ ssr: true })(Post);
