@@ -1,0 +1,12 @@
+fragment PostFragment on Post {
+  id
+  title
+  content
+  creatorId
+  likes
+  createdAt
+  likeStatus
+  creator {
+    username
+  }
+}
