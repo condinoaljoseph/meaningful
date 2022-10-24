@@ -132,6 +132,8 @@ export type UserResponse = {
   user?: Maybe<User>;
 };
 
+export type PostFragmentFragment = { __typename?: 'Post', id: number, title: string, content: string, creatorId: number, likes: number, createdAt: string, likeStatus: boolean, creator: { __typename?: 'User', username: string } };
+
 export type AddReactionMutationVariables = Exact<{
   value: Scalars['Boolean'];
   type: ReactionTypes;
@@ -187,9 +189,22 @@ export type PostsQueryVariables = Exact<{
 }>;
 
 
-export type PostsQuery = { __typename?: 'Query', posts: { __typename?: 'PaginatedPosts', hasMore: boolean, posts: Array<{ __typename?: 'Post', id: number, title: string, content: string, likes: number, createdAt: string, likeStatus: boolean, creator: { __typename?: 'User', username: string } }> } };
+export type PostsQuery = { __typename?: 'Query', posts: { __typename?: 'PaginatedPosts', hasMore: boolean, posts: Array<{ __typename?: 'Post', id: number, title: string, content: string, creatorId: number, likes: number, createdAt: string, likeStatus: boolean, creator: { __typename?: 'User', username: string } }> } };
 
-
+export const PostFragmentFragmentDoc = gql`
+    fragment PostFragment on Post {
+  id
+  title
+  content
+  creatorId
+  likes
+  createdAt
+  likeStatus
+  creator {
+    username
+  }
+}
+    `;
 export const AddReactionDocument = gql`
     mutation AddReaction($value: Boolean!, $type: ReactionTypes!, $postId: Int!) {
   addReaction(postId: $postId, type: $type, value: $value)
@@ -452,20 +467,12 @@ export const PostsDocument = gql`
     query Posts($limit: Int!, $cursor: String) {
   posts(limit: $limit, cursor: $cursor) {
     posts {
-      id
-      title
-      content
-      likes
-      createdAt
-      likeStatus
-      creator {
-        username
-      }
+      ...PostFragment
     }
     hasMore
   }
 }
-    `;
+    ${PostFragmentFragmentDoc}`;
 
 /**
  * __usePostsQuery__

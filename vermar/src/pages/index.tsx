@@ -12,13 +12,13 @@ const Home = () => {
           <PostsList />
         </div>
 
-        <div className="w-full lg:w-4/12 lg:min-w-[321px]">
+        {/* <div className="w-full lg:w-4/12 lg:min-w-[321px]">
           <Block className="lg:fixed lg:w-[320px] mt-4 lg:mt-0">
             <ExclamationCircleIcon className="w-[1em] h-[1em] inline mr-1" />
             meaningful is still in the beta phase, things may break, please
             handle us with care.
           </Block>
-        </div>
+        </div> */}
       </div>
     </Layout>
   );
