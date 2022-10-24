@@ -1,6 +1,5 @@
-import { useState } from "react";
 import { useMeQuery } from "../generated/graphql";
-import { useAppPersistStore } from "../store/useAppStore";
+import { useAppPersistStore, useAppStore } from "../store/useAppStore";
 import { Login } from "./Login";
 import { AvatarUser } from "./ui/AvatarUser";
 import { Button } from "./ui/Button";
@@ -8,8 +7,9 @@ import { MenuAccount } from "./ui/MenuAccount";
 import { Modal } from "./ui/Modal";
 
 export const NavbarAccount = () => {
-  const [showModal, setShowModal] = useState<boolean>(false);
   const setUser = useAppPersistStore((state) => state.setUser);
+  const showAuthModal = useAppStore((state) => state.showAuthModal);
+  const setShowAuthModal = useAppStore((state) => state.setShowAuthModal);
 
   const { data, loading } = useMeQuery({
     onCompleted: (data) => {
@@ -34,8 +34,12 @@ export const NavbarAccount = () => {
     </MenuAccount>
   ) : (
     <>
-      <Button onClick={() => setShowModal(true)}>Login</Button>
-      <Modal title="Login" open={showModal} onClose={() => setShowModal(false)}>
+      <Button onClick={() => setShowAuthModal(true)}>Login</Button>
+      <Modal
+        title="Login"
+        open={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+      >
         <div className="m-4 space-y-2">
           <Login />
         </div>

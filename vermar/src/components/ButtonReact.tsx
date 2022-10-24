@@ -1,6 +1,7 @@
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
 import { ReactionTypes, useAddReactionMutation } from "../generated/graphql";
+import { useAppStore } from "../store/useAppStore";
 import { ButtonIcon } from "./ButtonIcon";
 
 export const ButtonReact = ({
@@ -15,6 +16,7 @@ export const ButtonReact = ({
   reacted?: boolean;
 }) => {
   const [addReaction] = useAddReactionMutation();
+  const setShowAuthModal = useAppStore((state) => state.setShowAuthModal);
 
   return (
     <ButtonIcon
@@ -34,6 +36,11 @@ export const ButtonReact = ({
           },
 
           update: (cache) => cache.evict({ id: "Post:" + postId }),
+          onError: (error) => {
+            if (error.message === "not authenticated") {
+              setShowAuthModal(true);
+            }
+          },
         });
       }}
     >
