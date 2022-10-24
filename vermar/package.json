@@ -17,6 +17,7 @@
     "@hookform/resolvers": "^2.9.8",
     "@tailwindcss/line-clamp": "^0.4.2",
     "clsx": "^1.2.1",
+    "dayjs": "^1.11.6",
     "graphql": "15.3.0",
     "isomorphic-dompurify": "^0.23.0",
     "marked": "^4.1.1",

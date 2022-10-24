@@ -41,13 +41,7 @@ export const PostsList = () => {
       ) : (
         <div className="space-y-4">
           {data?.posts.posts.map((post, i) => (
-            <PostsItem
-              key={`${post.id}_${i}`}
-              id={post.id}
-              title={post.title}
-              content={post.content}
-              user={post.creator.username}
-            />
+            <PostsItem key={`${post.id}_${i}`} post={post} />
           ))}
 
           {data && data?.posts.hasMore ? (
