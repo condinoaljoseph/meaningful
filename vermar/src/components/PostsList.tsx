@@ -40,9 +40,9 @@ export const PostsList = () => {
         </Block>
       ) : (
         <div className="space-y-4">
-          {data?.posts.posts.map((post) => (
+          {data?.posts.posts.map((post, i) => (
             <PostsItem
-              key={post.id}
+              key={`${post.id}_${i}`}
               id={post.id}
               title={post.title}
               content={post.content}
