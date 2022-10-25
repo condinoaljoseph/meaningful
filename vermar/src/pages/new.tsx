@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Layout } from "../components/Layout";
@@ -8,6 +9,7 @@ import { Input } from "../components/ui/Input";
 import { Markdown } from "../components/ui/Markdown";
 import { TextArea } from "../components/ui/Textarea";
 import { PostInput, useCreatePostMutation } from "../generated/graphql";
+import { useAppPersistStore } from "../store/useAppStore";
 import withApollo from "../utils/withApollo";
 
 const New = () => {
@@ -21,15 +23,19 @@ const New = () => {
   const source = form.watch("content");
   const title = form.watch("title");
 
+  const { push } = useRouter();
   const [preview, setPreview] = useState<boolean>(false);
-
   const [createPost] = useCreatePostMutation();
+  const user = useAppPersistStore((state) => state.user);
 
   const onSubmit: SubmitHandler<PostInput> = async (data) => {
     await createPost({
       variables: { options: data },
       update: (cache) => {
         cache.evict({ fieldName: "posts:{}" });
+      },
+      onCompleted: (data) => {
+        push(`/${user?.username}/${data.createPost.id}`);
       },
     });
   };
