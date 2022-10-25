@@ -57,7 +57,7 @@ const Post = () => {
                   <div className="flex items-center space-x-4">
                     <ButtonShare />
                     <ButtonMore
-                      postId={data?.post?.id}
+                      postId={data?.post?.id!}
                       username={data?.post?.creator.username}
                     />
                   </div>
@@ -100,7 +100,7 @@ const Post = () => {
                 <div className="flex items-center space-x-4">
                   <ButtonShare position="top-right" />
                   <ButtonMore
-                    postId={data?.post?.id}
+                    postId={data?.post?.id!}
                     username={data?.post?.creator.username}
                     position="top-right"
                   />

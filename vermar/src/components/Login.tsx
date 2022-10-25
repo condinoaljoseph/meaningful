@@ -31,6 +31,8 @@ export const Login = () => {
                 me: data?.login.user,
               },
             });
+
+            cache.evict({ fieldName: "posts:{}" });
           },
         });
         if (response.data?.login.errors) {

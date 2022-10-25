@@ -2,8 +2,8 @@ import { Menu } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import { useRouter } from "next/router";
+import { useDeletePostMutation } from "../generated/graphql";
 import { useAppPersistStore } from "../store/useAppStore";
-import { ButtonIcon } from "./ButtonIcon";
 
 export const ButtonMore = ({
   username,
@@ -11,10 +11,11 @@ export const ButtonMore = ({
   position = "bottom-right",
 }: {
   username?: string;
-  postId?: number;
+  postId: number;
   position?: "bottom-right" | "top-right" | "center-top";
 }) => {
   const { push } = useRouter();
+  const [deletePost] = useDeletePostMutation();
   const user = useAppPersistStore((state) => state.user);
 
   return (
@@ -63,10 +64,20 @@ export const ButtonMore = ({
                       "cursor-pointer whitespace-nowrap px-3 py-2"
                     )}
                     onClick={() => {
-                      console.log("delete post");
+                      if (confirm("Are you sure you want to delete?")) {
+                        deletePost({
+                          variables: { id: postId },
+                          update: (cache) => {
+                            cache.evict({ id: "Post:" + postId });
+                          },
+                          onCompleted: () => {
+                            push("/");
+                          },
+                        });
+                      }
                     }}
                   >
-                    Manage
+                    Delete
                   </div>
                 )}
               </Menu.Item>

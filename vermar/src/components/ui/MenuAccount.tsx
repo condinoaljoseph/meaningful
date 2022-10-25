@@ -1,12 +1,16 @@
 import { useApolloClient } from "@apollo/client";
 import { Menu } from "@headlessui/react";
 import clsx from "clsx";
+import { useRouter } from "next/router";
 import { ReactNode } from "react";
 import { useLogoutMutation } from "../../generated/graphql";
+import { useAppPersistStore } from "../../store/useAppStore";
 
 export const MenuAccount = ({ children }: { children: ReactNode }) => {
+  const { push } = useRouter();
   const [logout] = useLogoutMutation();
   const apolloClient = useApolloClient();
+  const user = useAppPersistStore((state) => state.user);
 
   return (
     <Menu as="div" className="relative inline-block h-full text-left">
@@ -24,6 +28,7 @@ export const MenuAccount = ({ children }: { children: ReactNode }) => {
                     : "bg-skin-header-bg text-skin-text",
                   "cursor-pointer whitespace-nowrap px-3 py-2"
                 )}
+                onClick={() => push(`/${user?.username}`)}
               >
                 View profile
               </div>

@@ -7,7 +7,7 @@ export const ButtonFollow = () => {
 
   return (
     <Button
-      className={clsx("group min-w-[120px]", {
+      className={clsx("group min-w-[140px]", {
         "hover:!border-red hover:!bg-red hover:!bg-opacity-5 hover:!text-red":
           isFollowing,
       })}
