@@ -27,6 +27,18 @@ class PostInput {
   content: string;
 }
 
+@InputType()
+class PostsQueryRequest {
+  @Field(() => Int)
+  limit: number;
+
+  @Field(() => String, { nullable: true })
+  cursor: string;
+
+  @Field(() => Int, { nullable: true })
+  creatorId: number;
+}
+
 @ObjectType()
 class PaginatedPosts {
   @Field(() => [Post])
@@ -70,9 +82,9 @@ export class PostResolver {
 
   @Query(() => PaginatedPosts)
   async posts(
-    @Arg("limit", () => Int) limit: number,
-    @Arg("cursor", () => String, { nullable: true }) cursor: string
+    @Arg("request") request: PostsQueryRequest
   ): Promise<PaginatedPosts> {
+    const { limit, cursor, creatorId } = request;
     const realLimit = Math.max(5, limit);
 
     const qb = getConnection()
@@ -84,6 +96,12 @@ export class PostResolver {
     if (cursor) {
       qb.where('p."createdAt" < :cursor', {
         cursor: new Date(parseInt(cursor)),
+      });
+    }
+
+    if (creatorId) {
+      qb.where('p."creatorId" = :creatorId', {
+        creatorId,
       });
     }
 

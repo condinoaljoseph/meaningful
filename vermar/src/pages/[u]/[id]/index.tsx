@@ -17,10 +17,13 @@ import { Layout } from "../../../components/Layout";
 import Error from "next/error";
 
 const Post = () => {
-  const { query } = useRouter();
+  const {
+    query: { id },
+  } = useRouter();
 
   const { data, loading, error } = usePostQuery({
-    variables: { id: parseInt(query.id as string) },
+    variables: { id: parseInt(id as string) },
+    skip: !id,
     notifyOnNetworkStatusChange: true,
   });
 

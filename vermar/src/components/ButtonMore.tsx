@@ -71,7 +71,7 @@ export const ButtonMore = ({
                             cache.evict({ id: "Post:" + postId });
                           },
                           onCompleted: () => {
-                            push("/");
+                            push(`/${user?.username}`);
                           },
                         });
                       }

@@ -1,15 +1,23 @@
 import { useRef } from "react";
-import { usePostsQuery } from "../generated/graphql";
+import { PostsQueryRequest, usePostsQuery } from "../generated/graphql";
 import { PostsItem } from "./PostsItem";
 import { Block } from "./ui/Block";
 import { Button } from "./ui/Button";
 import { useInView } from "react-cool-inview";
 
-export const PostsList = () => {
+export const PostsList = ({
+  limit = 10,
+  cursor = null,
+  creatorId = null,
+}: PostsQueryRequest) => {
   const loadMoreRef = useRef<boolean>();
   const { data, loading, fetchMore, variables } = usePostsQuery({
     variables: {
-      limit: 10,
+      request: {
+        limit,
+        cursor,
+        creatorId,
+      },
     },
     notifyOnNetworkStatusChange: true,
   });
@@ -23,7 +31,7 @@ export const PostsList = () => {
       if (data && data?.posts.hasMore) {
         await fetchMore({
           variables: {
-            limit: variables?.limit,
+            limit: variables?.request.limit,
             cursor: data?.posts.posts[data.posts.posts.length - 1].createdAt,
           },
         });
@@ -56,7 +64,7 @@ export const PostsList = () => {
 
                       fetchMore({
                         variables: {
-                          limit: variables?.limit,
+                          limit: variables?.request.limit,
                           cursor:
                             data.posts.posts[data.posts.posts.length - 1]
                               .createdAt,
