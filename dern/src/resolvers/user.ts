@@ -43,6 +43,17 @@ class UserResponse {
 
 @Resolver()
 export class UserResolver {
+  @Query(() => User, { nullable: true })
+  async user(@Arg("username") username: string): Promise<User | null> {
+    const user = await User.findOne({ where: { username } });
+
+    if (!user) {
+      return null;
+    }
+
+    return user;
+  }
+
   @Query(() => [User])
   async users(): Promise<User[]> {
     return await User.find();

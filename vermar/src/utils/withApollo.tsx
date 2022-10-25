@@ -18,7 +18,7 @@ export default withApollo(
           Query: {
             fields: {
               posts: {
-                keyArgs: [],
+                keyArgs: ["request", ["creatorId"]],
                 merge(
                   existing: PaginatedPosts | undefined,
                   incoming: PaginatedPosts

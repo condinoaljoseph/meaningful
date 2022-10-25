@@ -1,5 +1,5 @@
-query Posts($limit: Int!, $cursor: String) {
-  posts(limit: $limit, cursor: $cursor) {
+query Posts($request: PostsQueryRequest!) {
+  posts(request: $request) {
     posts {
       ...PostFragment
     }

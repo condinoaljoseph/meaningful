@@ -18,11 +18,15 @@ import { useAppPersistStore } from "../../../store/useAppStore";
 import withApollo from "../../../utils/withApollo";
 
 const Edit = () => {
-  const { query, back } = useRouter();
+  const {
+    query: { id },
+    back,
+  } = useRouter();
   const user = useAppPersistStore((state) => state.user);
 
   const { data, loading } = usePostQuery({
-    variables: { id: parseInt(query.id as string) },
+    variables: { id: parseInt(id as string) },
+    skip: !id,
   });
 
   const form = useForm<PostInput>({
@@ -49,12 +53,12 @@ const Edit = () => {
   const onSubmit: SubmitHandler<PostInput> = async (data) => {
     await updatePost({
       variables: {
-        id: parseInt(query.id as string),
+        id: parseInt(id as string),
         ...data,
       },
-    });
 
-    back();
+      onCompleted: () => back(),
+    });
   };
 
   if (!data && loading) {
