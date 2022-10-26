@@ -1,13 +1,16 @@
 import Link from "next/link";
-import { PostFragmentFragment } from "../generated/graphql";
-import { AvatarUser } from "./ui/AvatarUser";
+import { Post } from "../generated/graphql";
 import { Block } from "./ui/Block";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { UserPophover } from "./UserPophover";
+import { useHasMounted } from "../composables/useHasMounted";
 
 dayjs.extend(relativeTime);
 
-export const PostsItem = ({ post }: { post: PostFragmentFragment }) => {
+export const PostsItem = ({ post }: { post: Post }) => {
+  const hasMounted = useHasMounted();
+
   return (
     <Link href={`/${post.creator.username}/${post.id}`}>
       <a className="block text-skin-text">
@@ -15,12 +18,7 @@ export const PostsItem = ({ post }: { post: PostFragmentFragment }) => {
           <div>
             <div className="mb-2 flex items-center justify-between">
               <div className="flex items-center space-x-1">
-                <div className="flex items-center">
-                  <AvatarUser user={post.creator.username} size="28" />
-                  <span className="ml-2 text-skin-link">
-                    {post.creator.username}
-                  </span>
-                </div>
+                {hasMounted && <UserPophover user={post.creator} />}
               </div>
             </div>
             <div className="relative mb-1 break-words pr-[80px] leading-7">
