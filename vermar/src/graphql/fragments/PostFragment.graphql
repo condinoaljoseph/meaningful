@@ -5,8 +5,9 @@ fragment PostFragment on Post {
   creatorId
   likes
   createdAt
+  updatedAt
   likeStatus
   creator {
-    username
+    ...UserFragment
   }
 }

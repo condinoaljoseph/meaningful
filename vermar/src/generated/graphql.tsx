@@ -143,7 +143,9 @@ export type UserResponse = {
   user?: Maybe<User>;
 };
 
-export type PostFragmentFragment = { __typename?: 'Post', id: number, title: string, content: string, creatorId: number, likes: number, createdAt: string, likeStatus: boolean, creator: { __typename?: 'User', username: string } };
+export type PostFragmentFragment = { __typename?: 'Post', id: number, title: string, content: string, creatorId: number, likes: number, createdAt: string, updatedAt: string, likeStatus: boolean, creator: { __typename?: 'User', id: number, username: string, createdAt: string, updatedAt: string } };
+
+export type UserFragmentFragment = { __typename?: 'User', id: number, username: string, createdAt: string, updatedAt: string };
 
 export type AddReactionMutationVariables = Exact<{
   value: Scalars['Boolean'];
@@ -173,7 +175,7 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string } | null } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string, createdAt: string, updatedAt: string } | null } };
 
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -192,21 +194,21 @@ export type UpdatePostMutation = { __typename?: 'Mutation', updatePost?: { __typ
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, username: string } | null };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, username: string, createdAt: string, updatedAt: string } | null };
 
 export type PostQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type PostQuery = { __typename?: 'Query', post?: { __typename?: 'Post', id: number, title: string, content: string, creatorId: number, likes: number, createdAt: string, likeStatus: boolean, creator: { __typename?: 'User', username: string } } | null };
+export type PostQuery = { __typename?: 'Query', post?: { __typename?: 'Post', id: number, title: string, content: string, creatorId: number, likes: number, createdAt: string, updatedAt: string, likeStatus: boolean, creator: { __typename?: 'User', id: number, username: string, createdAt: string, updatedAt: string } } | null };
 
 export type PostsQueryVariables = Exact<{
   request: PostsQueryRequest;
 }>;
 
 
-export type PostsQuery = { __typename?: 'Query', posts: { __typename?: 'PaginatedPosts', hasMore: boolean, posts: Array<{ __typename?: 'Post', id: number, title: string, content: string, creatorId: number, likes: number, createdAt: string, likeStatus: boolean, creator: { __typename?: 'User', username: string } }> } };
+export type PostsQuery = { __typename?: 'Query', posts: { __typename?: 'PaginatedPosts', hasMore: boolean, posts: Array<{ __typename?: 'Post', id: number, title: string, content: string, creatorId: number, likes: number, createdAt: string, updatedAt: string, likeStatus: boolean, creator: { __typename?: 'User', id: number, username: string, createdAt: string, updatedAt: string } }> } };
 
 export type UserQueryVariables = Exact<{
   username: Scalars['String'];
@@ -215,6 +217,14 @@ export type UserQueryVariables = Exact<{
 
 export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, username: string, createdAt: string, updatedAt: string } | null };
 
+export const UserFragmentFragmentDoc = gql`
+    fragment UserFragment on User {
+  id
+  username
+  createdAt
+  updatedAt
+}
+    `;
 export const PostFragmentFragmentDoc = gql`
     fragment PostFragment on Post {
   id
@@ -223,12 +233,13 @@ export const PostFragmentFragmentDoc = gql`
   creatorId
   likes
   createdAt
+  updatedAt
   likeStatus
   creator {
-    username
+    ...UserFragment
   }
 }
-    `;
+    ${UserFragmentFragmentDoc}`;
 export const AddReactionDocument = gql`
     mutation AddReaction($value: Boolean!, $type: ReactionTypes!, $postId: Int!) {
   addReaction(postId: $postId, type: $type, value: $value)
@@ -340,12 +351,11 @@ export const LoginDocument = gql`
       message
     }
     user {
-      id
-      username
+      ...UserFragment
     }
   }
 }
-    `;
+    ${UserFragmentFragmentDoc}`;
 export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
 
 /**
@@ -442,11 +452,10 @@ export type UpdatePostMutationOptions = Apollo.BaseMutationOptions<UpdatePostMut
 export const MeDocument = gql`
     query Me {
   me {
-    id
-    username
+    ...UserFragment
   }
 }
-    `;
+    ${UserFragmentFragmentDoc}`;
 
 /**
  * __useMeQuery__
@@ -477,19 +486,10 @@ export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const PostDocument = gql`
     query Post($id: Int!) {
   post(id: $id) {
-    id
-    title
-    content
-    creatorId
-    likes
-    createdAt
-    likeStatus
-    creator {
-      username
-    }
+    ...PostFragment
   }
 }
-    `;
+    ${PostFragmentFragmentDoc}`;
 
 /**
  * __usePostQuery__
@@ -559,13 +559,10 @@ export type PostsQueryResult = Apollo.QueryResult<PostsQuery, PostsQueryVariable
 export const UserDocument = gql`
     query User($username: String!) {
   user(username: $username) {
-    id
-    username
-    createdAt
-    updatedAt
+    ...UserFragment
   }
 }
-    `;
+    ${UserFragmentFragmentDoc}`;
 
 /**
  * __useUserQuery__

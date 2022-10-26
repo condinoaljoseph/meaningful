@@ -1,14 +1,5 @@
 query Post($id: Int!) {
   post(id: $id) {
-    id
-    title
-    content
-    creatorId
-    likes
-    createdAt
-    likeStatus
-    creator {
-      username
-    }
+    ...PostFragment
   }
 }
