@@ -145,6 +145,8 @@ export type UserResponse = {
 
 export type PostFragmentFragment = { __typename?: 'Post', id: number, title: string, content: string, creatorId: number, likes: number, createdAt: string, likeStatus: boolean, creator: { __typename?: 'User', username: string } };
 
+export type UserFragmentFragment = { __typename?: 'User', id: number, username: string, createdAt: string, updatedAt: string };
+
 export type AddReactionMutationVariables = Exact<{
   value: Scalars['Boolean'];
   type: ReactionTypes;
@@ -199,7 +201,7 @@ export type PostQueryVariables = Exact<{
 }>;
 
 
-export type PostQuery = { __typename?: 'Query', post?: { __typename?: 'Post', id: number, title: string, content: string, creatorId: number, likes: number, createdAt: string, likeStatus: boolean, creator: { __typename?: 'User', username: string } } | null };
+export type PostQuery = { __typename?: 'Query', post?: { __typename?: 'Post', id: number, title: string, content: string, creatorId: number, likes: number, createdAt: string, likeStatus: boolean, creator: { __typename?: 'User', id: number, username: string, createdAt: string, updatedAt: string } } | null };
 
 export type PostsQueryVariables = Exact<{
   request: PostsQueryRequest;
@@ -227,6 +229,14 @@ export const PostFragmentFragmentDoc = gql`
   creator {
     username
   }
+}
+    `;
+export const UserFragmentFragmentDoc = gql`
+    fragment UserFragment on User {
+  id
+  username
+  createdAt
+  updatedAt
 }
     `;
 export const AddReactionDocument = gql`
@@ -485,11 +495,11 @@ export const PostDocument = gql`
     createdAt
     likeStatus
     creator {
-      username
+      ...UserFragment
     }
   }
 }
-    `;
+    ${UserFragmentFragmentDoc}`;
 
 /**
  * __usePostQuery__
