@@ -85,7 +85,7 @@ const Post = () => {
                   <ButtonMore
                     postId={data?.post?.id!}
                     username={data?.post?.creator.username || ""}
-                    position="center-top"
+                    placement="bottom"
                   />
                 </div>
               </div>
@@ -101,11 +101,10 @@ const Post = () => {
                   <ButtonComment />
                 </div>
                 <div className="flex items-center space-x-4">
-                  <ButtonShare position="top-right" />
+                  <ButtonShare />
                   <ButtonMore
                     postId={data?.post?.id!}
                     username={data?.post?.creator.username}
-                    position="top-right"
                   />
                 </div>
               </div>

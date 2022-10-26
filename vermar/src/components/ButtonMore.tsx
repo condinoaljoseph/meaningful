@@ -1,18 +1,20 @@
+import { Float } from "@headlessui-float/react";
 import { Menu } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import { useRouter } from "next/router";
 import { useDeletePostMutation } from "../generated/graphql";
 import { useAppPersistStore } from "../store/useAppStore";
+import type { Placement } from "@floating-ui/dom";
 
 export const ButtonMore = ({
   username,
   postId,
-  position = "bottom-right",
+  placement = "bottom-end",
 }: {
   username?: string;
   postId: number;
-  position?: "bottom-right" | "top-right" | "center-top";
+  placement?: Placement;
 }) => {
   const { push } = useRouter();
   const [deletePost] = useDeletePostMutation();
@@ -20,89 +22,93 @@ export const ButtonMore = ({
 
   return (
     <Menu as="div" className="relative">
-      <Menu.Button className="flex items-center rounded-full p-[6px] text-md text-skin-text transition-colors duration-200 hover:text-skin-link">
-        <EllipsisHorizontalIcon className="w-[1em] h-[1em]" />
-      </Menu.Button>
-      <Menu.Items
-        className={clsx(
-          "overflow-hidden absolute z-50 rounded-2xl border bg-skin-header-bg shadow-lg outline-none",
-          {
-            "right-0": position === "bottom-right",
-            "bottom-[44px] right-0": position === "top-right",
-            "bottom-[44px] left-1/2 -translate-x-1/2":
-              position === "center-top",
-          }
-        )}
+      <Float
+        enter="transition ease-out duration-100"
+        enterFrom="transform opacity-0 scale-95"
+        enterTo="transform opacity-100 scale-100"
+        leave="transition ease-in duration-75"
+        leaveFrom="transform opacity-100 scale-100"
+        leaveTo="transform opacity-0 scale-95"
+        offset={8}
+        shift={6}
+        flip={16}
+        zIndex={50}
+        placement={placement}
       >
-        <div className="no-scrollbar max-h-[300px] overflow-auto">
-          {username === user?.username ? (
-            <>
-              <Menu.Item>
-                {({ active }) => (
-                  <div
-                    className={clsx(
-                      active
-                        ? "bg-skin-border text-skin-link"
-                        : "bg-skin-header-bg text-skin-text",
-                      "cursor-pointer whitespace-nowrap px-3 py-2"
-                    )}
-                    onClick={() => {
-                      push(`/${username}/${postId}/edit`);
-                    }}
-                  >
-                    Edit
-                  </div>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <div
-                    className={clsx(
-                      active
-                        ? "bg-skin-border text-skin-link"
-                        : "bg-skin-header-bg text-skin-text",
-                      "cursor-pointer whitespace-nowrap px-3 py-2"
-                    )}
-                    onClick={() => {
-                      if (confirm("Are you sure you want to delete?")) {
-                        deletePost({
-                          variables: { id: postId },
-                          update: (cache) => {
-                            cache.evict({ id: "Post:" + postId });
-                          },
-                          onCompleted: () => {
-                            push(`/${user?.username}`);
-                          },
-                        });
-                      }
-                    }}
-                  >
-                    Delete
-                  </div>
-                )}
-              </Menu.Item>
-            </>
-          ) : (
-            <Menu.Item>
-              {({ active }) => (
-                <div
-                  className={clsx(
-                    active
-                      ? "bg-skin-border text-skin-link"
-                      : "bg-skin-header-bg text-skin-text",
-                    "cursor-pointer whitespace-nowrap px-3 py-2"
+        <Menu.Button className="flex items-center rounded-full p-[6px] text-md text-skin-text transition-colors duration-200 hover:text-skin-link">
+          <EllipsisHorizontalIcon className="w-[1em] h-[1em]" />
+        </Menu.Button>
+        <Menu.Items className="overflow-hidden z-50 rounded-2xl border bg-skin-header-bg shadow-lg outline-none">
+          <div className="no-scrollbar max-h-[300px] overflow-auto">
+            {username === user?.username ? (
+              <>
+                <Menu.Item>
+                  {({ active }) => (
+                    <div
+                      className={clsx(
+                        active
+                          ? "bg-skin-border text-skin-link"
+                          : "bg-skin-header-bg text-skin-text",
+                        "cursor-pointer whitespace-nowrap px-3 py-2"
+                      )}
+                      onClick={() => {
+                        push(`/${username}/${postId}/edit`);
+                      }}
+                    >
+                      Edit
+                    </div>
                   )}
-                  onClick={() => {
-                    console.log("report post");
-                  }}
-                >
-                  Report
-                </div>
-              )}
-            </Menu.Item>
-          )}
-        </div>
-      </Menu.Items>
+                </Menu.Item>
+                <Menu.Item>
+                  {({ active }) => (
+                    <div
+                      className={clsx(
+                        active
+                          ? "bg-skin-border text-skin-link"
+                          : "bg-skin-header-bg text-skin-text",
+                        "cursor-pointer whitespace-nowrap px-3 py-2"
+                      )}
+                      onClick={() => {
+                        if (confirm("Are you sure you want to delete?")) {
+                          deletePost({
+                            variables: { id: postId },
+                            update: (cache) => {
+                              cache.evict({ id: "Post:" + postId });
+                            },
+                            onCompleted: () => {
+                              push(`/${user?.username}`);
+                            },
+                          });
+                        }
+                      }}
+                    >
+                      Delete
+                    </div>
+                  )}
+                </Menu.Item>
+              </>
+            ) : (
+              <Menu.Item>
+                {({ active }) => (
+                  <div
+                    className={clsx(
+                      active
+                        ? "bg-skin-border text-skin-link"
+                        : "bg-skin-header-bg text-skin-text",
+                      "cursor-pointer whitespace-nowrap px-3 py-2"
+                    )}
+                    onClick={() => {
+                      console.log("report post");
+                    }}
+                  >
+                    Report
+                  </div>
+                )}
+              </Menu.Item>
+            )}
+          </div>
+        </Menu.Items>
+      </Float>
     </Menu>
   );
 };
