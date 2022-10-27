@@ -90,17 +90,18 @@ export class PostResolver {
     const qb = getConnection()
       .getRepository(Post)
       .createQueryBuilder("p")
+      .where("true")
       .orderBy('p."createdAt"', "DESC")
       .limit(realLimit + 1);
 
     if (cursor) {
-      qb.where('p."createdAt" < :cursor', {
+      qb.andWhere('p."createdAt" < :cursor', {
         cursor: new Date(parseInt(cursor)),
       });
     }
 
     if (creatorId) {
-      qb.where('p."creatorId" = :creatorId', {
+      qb.andWhere('p."creatorId" = :creatorId', {
         creatorId,
       });
     }

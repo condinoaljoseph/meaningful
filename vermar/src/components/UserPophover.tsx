@@ -4,7 +4,6 @@ import { AvatarUser } from "./ui/AvatarUser";
 import { Button } from "./ui/Button";
 import { Float } from "@headlessui-float/react";
 import { User } from "../generated/graphql";
-import { useRouter } from "next/router";
 import Link from "next/link";
 
 export const UserPophover = ({ user }: { user: User }) => {
@@ -93,9 +92,6 @@ export const UserPophover = ({ user }: { user: User }) => {
                       </Button>
                     </Link>
                   </div>
-                  {/* <div className="w-1/2 pl-2">
-                    <Button className="w-full">Follow</Button>
-                  </div> */}
                 </div>
               </div>
             </div>

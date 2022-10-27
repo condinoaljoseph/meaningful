@@ -7,7 +7,6 @@ import { useInView } from "react-cool-inview";
 
 export const PostsList = ({
   limit = 10,
-  cursor = null,
   creatorId = null,
 }: PostsQueryRequest) => {
   const loadMoreRef = useRef<boolean>();
@@ -15,7 +14,6 @@ export const PostsList = ({
     variables: {
       request: {
         limit,
-        cursor,
         creatorId,
       },
     },
@@ -31,8 +29,11 @@ export const PostsList = ({
       if (data && data?.posts.hasMore) {
         await fetchMore({
           variables: {
-            limit: variables?.request.limit,
-            cursor: data?.posts.posts[data.posts.posts.length - 1].createdAt,
+            request: {
+              limit: variables?.request.limit,
+              cursor: data?.posts.posts[data.posts.posts.length - 1].createdAt,
+              creatorId: variables?.request.creatorId,
+            },
           },
         });
       }
@@ -64,10 +65,13 @@ export const PostsList = ({
 
                       fetchMore({
                         variables: {
-                          limit: variables?.request.limit,
-                          cursor:
-                            data.posts.posts[data.posts.posts.length - 1]
-                              .createdAt,
+                          request: {
+                            limit: variables?.request.limit,
+                            cursor:
+                              data.posts.posts[data.posts.posts.length - 1]
+                                .createdAt,
+                            creatorId: variables?.request.creatorId,
+                          },
                         },
                       });
                     }}
