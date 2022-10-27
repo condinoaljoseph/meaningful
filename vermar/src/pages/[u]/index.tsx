@@ -24,7 +24,7 @@ const Profile = () => {
   const hasMounted = useHasMounted();
   const user = useAppPersistStore((state) => state.user);
 
-  const { data, loading, error } = useUserQuery({
+  const { data, loading } = useUserQuery({
     variables: {
       username: u as string,
     },
@@ -32,7 +32,7 @@ const Profile = () => {
     notifyOnNetworkStatusChange: true,
   });
 
-  if (error) {
+  if (!data?.user) {
     return <Error statusCode={404} />;
   }
 
@@ -81,12 +81,18 @@ const Profile = () => {
                       </div>
                     </div>
 
-                    <div className="flex flex-grow items-start justify-end gap-x-2 lg:mb-4 lg:justify-center">
-                      <ButtonFollow />
-                      <ButtonRounded className="inline">
-                        <BellAlertIcon className="h-[1.2em] w-[1.2em]" />
-                      </ButtonRounded>
-                    </div>
+                    {user?.username === u && hasMounted ? (
+                      <div className="flex flex-grow items-start justify-end gap-x-2 lg:mb-4 lg:justify-center">
+                        <Button>Edit profile</Button>
+                      </div>
+                    ) : (
+                      <div className="flex flex-grow items-start justify-end gap-x-2 lg:mb-4 lg:justify-center">
+                        <ButtonFollow />
+                        <ButtonRounded className="inline">
+                          <BellAlertIcon className="h-[1.2em] w-[1.2em]" />
+                        </ButtonRounded>
+                      </div>
+                    )}
                   </div>
 
                   <div className="no-scrollbar mt-4 flex overflow-y-auto lg:my-3 lg:block">
@@ -105,40 +111,6 @@ const Profile = () => {
                         </div>
                       </a>
                     </Link>
-
-                    <Link href="/">
-                      <a>
-                        <div
-                          className={clsx(
-                            "block cursor-pointer whitespace-nowrap px-4  py-2 text-skin-link hover:bg-skin-bg",
-                            {
-                              "border-l-[0px] border-b-[3px] !pl-[21px] lg:border-b-[0px] lg:border-l-[3px]":
-                                pathname === "/[u]/settings",
-                            }
-                          )}
-                        >
-                          Activity
-                        </div>
-                      </a>
-                    </Link>
-
-                    {user?.username === u && hasMounted && (
-                      <Link href="/">
-                        <a>
-                          <div
-                            className={clsx(
-                              "block cursor-pointer whitespace-nowrap px-4  py-2 text-skin-link hover:bg-skin-bg",
-                              {
-                                "border-l-[0px] border-b-[3px] !pl-[21px] lg:border-b-[0px] lg:border-l-[3px]":
-                                  pathname === "/[u]/settings",
-                              }
-                            )}
-                          >
-                            Settings
-                          </div>
-                        </a>
-                      </Link>
-                    )}
                   </div>
                 </div>
               </Block>
