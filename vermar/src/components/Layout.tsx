@@ -3,6 +3,7 @@ import Head from "next/head";
 import { ReactNode, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useAppStore } from "../store/useAppStore";
+import { FlashNotifications } from "./FlashNotifications";
 import { Navbar } from "./Navbar";
 import { Sidebar } from "./Sidebar";
 import { Container } from "./ui/Container";
@@ -48,6 +49,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
           </div>
         </div>
       </div>
+      <FlashNotifications />
     </>
   );
 };

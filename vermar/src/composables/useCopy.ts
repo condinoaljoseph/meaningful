@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import useCopyToClipboard from "./useCopyToClipboard";
 
 export function useCopy() {
@@ -6,7 +7,7 @@ export function useCopy() {
   function copyToClipboard(text?: string) {
     if (!text) return;
     copy(text).then((copied) => {
-      if (copied) alert("Copied");
+      if (copied) toast.success("Copied");
     });
   }
 
