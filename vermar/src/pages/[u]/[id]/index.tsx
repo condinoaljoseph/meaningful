@@ -21,7 +21,7 @@ const Post = () => {
     query: { id },
   } = useRouter();
 
-  const { data, loading, error } = usePostQuery({
+  const { data, loading } = usePostQuery({
     variables: { id: parseInt(id as string) },
     skip: !id,
     notifyOnNetworkStatusChange: true,
@@ -29,7 +29,7 @@ const Post = () => {
 
   const { observe, inView } = useInView();
 
-  if (error) {
+  if (!data?.post) {
     return <Error statusCode={404} />;
   }
 
@@ -82,11 +82,6 @@ const Post = () => {
                     reacted={data?.post?.likeStatus}
                   />
                   <ButtonComment />
-                  <ButtonMore
-                    postId={data?.post?.id!}
-                    username={data?.post?.creator.username || ""}
-                    placement="bottom"
-                  />
                 </div>
               </div>
 
@@ -99,13 +94,6 @@ const Post = () => {
                     reacted={data?.post?.likeStatus}
                   />
                   <ButtonComment />
-                </div>
-                <div className="flex items-center space-x-4">
-                  <ButtonShare />
-                  <ButtonMore
-                    postId={data?.post?.id!}
-                    username={data?.post?.creator.username}
-                  />
                 </div>
               </div>
             </div>
