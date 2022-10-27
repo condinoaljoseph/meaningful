@@ -51,8 +51,8 @@ class PaginatedPosts {
 @Resolver(Post)
 export class PostResolver {
   @FieldResolver(() => User)
-  creator(@Root() post: Post) {
-    return User.findOne(post.creatorId);
+  creator(@Root() post: Post, @Ctx() ctx: AppContext) {
+    return ctx.userLoader.load(post.creatorId);
   }
 
   @FieldResolver(() => Boolean)
@@ -62,22 +62,16 @@ export class PostResolver {
   ): Promise<Boolean> {
     const { userId } = ctx.req.session;
 
-    if (userId) {
-      const result = await getConnection().query(
-        `
-        select r.value from reaction r where "userId" = $1 and "postId" = $2
-      `,
-        [userId, post.id]
-      );
-
-      if (result.length === 0) {
-        return false;
-      }
-
-      return result[0].value;
+    if (!userId) {
+      return false;
     }
 
-    return false;
+    const reaction = await ctx.reactionLoader.load({
+      postId: post.id,
+      userId,
+    });
+
+    return reaction ? reaction.value : false;
   }
 
   @Query(() => PaginatedPosts)
