@@ -2,6 +2,7 @@ import Error from "next/error";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { Layout } from "../../../components/Layout";
 import { Block } from "../../../components/ui/Block";
 import { Button } from "../../../components/ui/Button";
@@ -56,8 +57,8 @@ const Edit = () => {
         id: parseInt(id as string),
         ...data,
       },
-
       onCompleted: () => back(),
+      onError: (error) => toast.error(error.message),
     });
   };
 

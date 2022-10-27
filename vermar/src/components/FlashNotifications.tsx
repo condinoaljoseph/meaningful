@@ -4,7 +4,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { Button } from "./ui/Button";
 
 export const FlashNotifications = () => (
-  <Toaster position="bottom-center">
+  <Toaster position="top-right">
     {(t) => (
       <Button
         className={clsx(
