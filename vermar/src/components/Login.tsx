@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { MeDocument, MeQuery, useLoginMutation } from "../generated/graphql";
 import { Button } from "./ui/Button";
 import { Form } from "./ui/Form";
@@ -34,7 +35,10 @@ export const Login = () => {
 
             cache.evict({ fieldName: "posts:{}" });
           },
+
+          onError: (error) => toast.error(error.message),
         });
+
         if (response.data?.login.errors) {
           response.data.login.errors.forEach((error) => {
             form.setError(error.field as any, { message: error.message });

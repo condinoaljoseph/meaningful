@@ -60,7 +60,7 @@ const Post = () => {
                   <div className="flex items-center space-x-4">
                     <ButtonShare />
                     <ButtonMore
-                      postId={data?.post?.id!}
+                      postId={data?.post?.id}
                       username={data?.post?.creator.username}
                     />
                   </div>
@@ -76,7 +76,7 @@ const Post = () => {
               >
                 <div className="bg-skin-bg border border-skin-border text-skin-text shadow-lg h-[46px] px-[22px] rounded-[23px] flex items-center space-x-4">
                   <ButtonReact
-                    postId={data?.post?.id!}
+                    postId={data?.post?.id}
                     type={ReactionTypes.Like}
                     reacts={data?.post?.likes}
                     reacted={data?.post?.likeStatus}
@@ -88,7 +88,7 @@ const Post = () => {
               <div ref={observe} className="py-4 flex justify-between">
                 <div className="flex items-center space-x-4">
                   <ButtonReact
-                    postId={data?.post?.id!}
+                    postId={data?.post?.id}
                     type={ReactionTypes.Like}
                     reacts={data?.post?.likes}
                     reacted={data?.post?.likeStatus}

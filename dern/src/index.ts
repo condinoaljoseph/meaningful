@@ -16,6 +16,8 @@ import { Post } from "./entities/Post";
 import { Reaction } from "./entities/Reaction";
 import { createConnection } from "typeorm";
 import path from "path";
+import { createUserLoader } from "./utils/createUserLoader";
+import { createReactionLoader } from "./utils/createReactionLoader";
 
 const main = async () => {
   const redis = new Redis();
@@ -66,6 +68,8 @@ const main = async () => {
     context: ({ req, res }) => ({
       req,
       res,
+      userLoader: createUserLoader(),
+      reactionLoader: createReactionLoader(),
     }),
   });
 

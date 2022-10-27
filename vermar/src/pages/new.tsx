@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { Layout } from "../components/Layout";
 import { Block } from "../components/ui/Block";
 import { Button } from "../components/ui/Button";
@@ -37,6 +38,7 @@ const New = () => {
       onCompleted: (data) => {
         push(`/${user?.username}/${data.createPost.id}`);
       },
+      onError: (error) => toast.error(error.message),
     });
   };
 

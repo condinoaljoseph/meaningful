@@ -3,12 +3,17 @@ import { Menu } from "@headlessui/react";
 import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import type { Placement } from "@floating-ui/dom";
+import { useCopy } from "../composables/useCopy";
+import { useRouter } from "next/router";
 
 export const ButtonShare = ({
   placement = "bottom-end",
 }: {
   placement?: Placement;
 }) => {
+  const { copyToClipboard } = useCopy();
+  const { asPath } = useRouter();
+
   return (
     <Menu as="div" className="relative">
       <Float
@@ -38,6 +43,9 @@ export const ButtonShare = ({
                       : "bg-skin-header-bg text-skin-text",
                     "cursor-pointer whitespace-nowrap px-3 py-2"
                   )}
+                  onClick={() =>
+                    copyToClipboard(`http://localhost:3000${asPath}`)
+                  }
                 >
                   Copy link
                 </div>

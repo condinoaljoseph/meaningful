@@ -7,6 +7,7 @@ import { ReactNode } from "react";
 import { useLogoutMutation } from "../../generated/graphql";
 import { useAppPersistStore } from "../../store/useAppStore";
 import type { Placement } from "@floating-ui/dom";
+import toast from "react-hot-toast";
 
 export const MenuAccount = ({
   children,
@@ -65,8 +66,10 @@ export const MenuAccount = ({
                     "cursor-pointer whitespace-nowrap px-3 py-2"
                   )}
                   onClick={async () => {
-                    await logout();
-                    await apolloClient.resetStore();
+                    await logout({
+                      onCompleted: async () => await apolloClient.resetStore(),
+                      onError: (error) => toast.error(error.message),
+                    });
                   }}
                 >
                   Log out
