@@ -35,7 +35,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
             </div>
           </div>
         )}
-        <div className="relative flex w-screen min-w-0 shrink-0 flex-col sm:w-auto sm:shrink sm:grow">
+        <div className="relative flex w-screen min-w-0 flex-col shrink grow sm:w-auto">
           <div
             id="navbar"
             className="sticky top-0 z-40 border-b border-skin-border bg-skin-bg"
