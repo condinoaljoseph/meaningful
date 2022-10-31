@@ -5,7 +5,7 @@ export const Login = () => {
     <>
       <a href="http://localhost:4000/auth/github">
         <Button className="w-full" type="submit">
-          Github
+          Continue with Github
         </Button>
       </a>
     </>
