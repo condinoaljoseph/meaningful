@@ -1,6 +1,9 @@
 fragment UserFragment on User {
   id
   username
+  displayName
+  bio
+  image
   createdAt
   updatedAt
 }

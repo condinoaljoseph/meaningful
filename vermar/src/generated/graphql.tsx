@@ -15,20 +15,12 @@ export type Scalars = {
   Float: number;
 };
 
-export type FieldError = {
-  __typename?: 'FieldError';
-  field: Scalars['String'];
-  message: Scalars['String'];
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
   addReaction: Scalars['Boolean'];
   createPost: Post;
   deletePost: Scalars['Boolean'];
-  login: UserResponse;
   logout: Scalars['Boolean'];
-  register: UserResponse;
   updatePost?: Maybe<Post>;
 };
 
@@ -47,16 +39,6 @@ export type MutationCreatePostArgs = {
 
 export type MutationDeletePostArgs = {
   id: Scalars['Int'];
-};
-
-
-export type MutationLoginArgs = {
-  options: UserPasswordInput;
-};
-
-
-export type MutationRegisterArgs = {
-  options: UserPasswordInput;
 };
 
 
@@ -126,26 +108,19 @@ export enum ReactionTypes {
 
 export type User = {
   __typename?: 'User';
+  bio: Scalars['String'];
   createdAt: Scalars['String'];
+  displayName: Scalars['String'];
+  email: Scalars['String'];
   id: Scalars['Float'];
+  image: Scalars['String'];
   updatedAt: Scalars['String'];
   username: Scalars['String'];
 };
 
-export type UserPasswordInput = {
-  password: Scalars['String'];
-  username: Scalars['String'];
-};
+export type PostFragmentFragment = { __typename?: 'Post', id: number, title: string, content: string, creatorId: number, likes: number, createdAt: string, updatedAt: string, likeStatus: boolean, creator: { __typename?: 'User', id: number, username: string, displayName: string, bio: string, image: string, createdAt: string, updatedAt: string } };
 
-export type UserResponse = {
-  __typename?: 'UserResponse';
-  errors?: Maybe<Array<FieldError>>;
-  user?: Maybe<User>;
-};
-
-export type PostFragmentFragment = { __typename?: 'Post', id: number, title: string, content: string, creatorId: number, likes: number, createdAt: string, updatedAt: string, likeStatus: boolean, creator: { __typename?: 'User', id: number, username: string, createdAt: string, updatedAt: string } };
-
-export type UserFragmentFragment = { __typename?: 'User', id: number, username: string, createdAt: string, updatedAt: string };
+export type UserFragmentFragment = { __typename?: 'User', id: number, username: string, displayName: string, bio: string, image: string, createdAt: string, updatedAt: string };
 
 export type AddReactionMutationVariables = Exact<{
   value: Scalars['Boolean'];
@@ -170,13 +145,6 @@ export type DeletePostMutationVariables = Exact<{
 
 export type DeletePostMutation = { __typename?: 'Mutation', deletePost: boolean };
 
-export type LoginMutationVariables = Exact<{
-  options: UserPasswordInput;
-}>;
-
-
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string, createdAt: string, updatedAt: string } | null } };
-
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -194,33 +162,36 @@ export type UpdatePostMutation = { __typename?: 'Mutation', updatePost?: { __typ
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, username: string, createdAt: string, updatedAt: string } | null };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, username: string, displayName: string, bio: string, image: string, createdAt: string, updatedAt: string } | null };
 
 export type PostQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type PostQuery = { __typename?: 'Query', post?: { __typename?: 'Post', id: number, title: string, content: string, creatorId: number, likes: number, createdAt: string, updatedAt: string, likeStatus: boolean, creator: { __typename?: 'User', id: number, username: string, createdAt: string, updatedAt: string } } | null };
+export type PostQuery = { __typename?: 'Query', post?: { __typename?: 'Post', id: number, title: string, content: string, creatorId: number, likes: number, createdAt: string, updatedAt: string, likeStatus: boolean, creator: { __typename?: 'User', id: number, username: string, displayName: string, bio: string, image: string, createdAt: string, updatedAt: string } } | null };
 
 export type PostsQueryVariables = Exact<{
   request: PostsQueryRequest;
 }>;
 
 
-export type PostsQuery = { __typename?: 'Query', posts: { __typename?: 'PaginatedPosts', hasMore: boolean, posts: Array<{ __typename?: 'Post', id: number, title: string, content: string, creatorId: number, likes: number, createdAt: string, updatedAt: string, likeStatus: boolean, creator: { __typename?: 'User', id: number, username: string, createdAt: string, updatedAt: string } }> } };
+export type PostsQuery = { __typename?: 'Query', posts: { __typename?: 'PaginatedPosts', hasMore: boolean, posts: Array<{ __typename?: 'Post', id: number, title: string, content: string, creatorId: number, likes: number, createdAt: string, updatedAt: string, likeStatus: boolean, creator: { __typename?: 'User', id: number, username: string, displayName: string, bio: string, image: string, createdAt: string, updatedAt: string } }> } };
 
 export type UserQueryVariables = Exact<{
   username: Scalars['String'];
 }>;
 
 
-export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, username: string, createdAt: string, updatedAt: string } | null };
+export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, username: string, displayName: string, bio: string, image: string, createdAt: string, updatedAt: string } | null };
 
 export const UserFragmentFragmentDoc = gql`
     fragment UserFragment on User {
   id
   username
+  displayName
+  bio
+  image
   createdAt
   updatedAt
 }
@@ -343,45 +314,6 @@ export function useDeletePostMutation(baseOptions?: Apollo.MutationHookOptions<D
 export type DeletePostMutationHookResult = ReturnType<typeof useDeletePostMutation>;
 export type DeletePostMutationResult = Apollo.MutationResult<DeletePostMutation>;
 export type DeletePostMutationOptions = Apollo.BaseMutationOptions<DeletePostMutation, DeletePostMutationVariables>;
-export const LoginDocument = gql`
-    mutation Login($options: UserPasswordInput!) {
-  login(options: $options) {
-    errors {
-      field
-      message
-    }
-    user {
-      ...UserFragment
-    }
-  }
-}
-    ${UserFragmentFragmentDoc}`;
-export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
-
-/**
- * __useLoginMutation__
- *
- * To run a mutation, you first call `useLoginMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useLoginMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [loginMutation, { data, loading, error }] = useLoginMutation({
- *   variables: {
- *      options: // value for 'options'
- *   },
- * });
- */
-export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options);
-      }
-export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
-export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
-export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
 export const LogoutDocument = gql`
     mutation Logout {
   logout
