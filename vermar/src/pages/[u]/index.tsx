@@ -111,6 +111,21 @@ const Profile = () => {
                         </div>
                       </a>
                     </Link>
+                    <Link href="/">
+                      <a>
+                        <div
+                          className={clsx(
+                            "block cursor-pointer whitespace-nowrap px-4  py-2 text-skin-link hover:bg-skin-bg",
+                            {
+                              "border-l-[0px] border-b-[3px] !pl-[21px] lg:border-b-[0px] lg:border-l-[3px]":
+                                pathname === "/[u]/about",
+                            }
+                          )}
+                        >
+                          About
+                        </div>
+                      </a>
+                    </Link>
                   </div>
                 </div>
               </Block>
@@ -119,7 +134,6 @@ const Profile = () => {
         </div>
 
         <div className="relative w-full pl-0 lg:w-3/4 lg:pl-5">
-          <Block className="mb-3">{data.user.bio}</Block>
           <div className="relative mb-3 flex px-3 md:px-0">
             <div className="flex-auto">
               <div className="flex flex-auto items-center">

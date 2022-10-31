@@ -1,5 +1,6 @@
 fragment UserFragment on User {
   id
+  email
   username
   displayName
   bio

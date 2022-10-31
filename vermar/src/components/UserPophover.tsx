@@ -67,7 +67,7 @@ export const UserPophover = ({ user }: { user: User }) => {
           onMouseEnter={open}
           onMouseLeave={delayClose}
         >
-          <div className="overflow-hidden rounded-2xl border bg-skin-header-bg shadow-lg">
+          <div className="overflow-hidden rounded-2xl border border-skin-border bg-skin-header-bg shadow-lg">
             <div className="no-scrollbar max-h-[85vh] overflow-y-auto overscroll-contain">
               <div className="p-4">
                 <div className="flex">
@@ -78,7 +78,7 @@ export const UserPophover = ({ user }: { user: User }) => {
                     <div className="truncate px-3 text-lg font-semibold leading-10 text-skin-heading">
                       {user.displayName}
                     </div>
-                    <div className="flex px-3 min-w-0 cursor-pointer items-center rounded-full text-xs">
+                    <div className="flex px-3 min-w-0 cursor-pointer items-center rounded-full text-sm text-skin-text">
                       <div className="truncate">{user.username}</div>
                     </div>
                   </div>
