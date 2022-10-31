@@ -65,18 +65,18 @@ const Profile = () => {
                   <div className="block px-4 pt-4 text-center md:flex lg:block lg:px-0 lg:pt-0">
                     <div className="flex lg:block">
                       <AvatarUser
-                        user={data?.user?.username}
+                        src={data?.user?.image}
                         size="80"
                         className="lg:my-3"
                       />
                       <div className="mx-3 flex flex-col justify-center truncate text-left lg:block lg:text-center">
                         <h3 className="mb-[2px] flex items-center lg:justify-center">
                           <div className="mr-1 truncate">
-                            {data?.user?.username}
+                            {data.user.displayName}
                           </div>
                         </h3>
                         <div className="mb-[12px] text-skin-text">
-                          2 followers
+                          {data.user.username}
                         </div>
                       </div>
                     </div>
@@ -119,10 +119,7 @@ const Profile = () => {
         </div>
 
         <div className="relative w-full pl-0 lg:w-3/4 lg:pl-5">
-          <Block className="mb-3">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fugiat,
-            nisi. Harum voluptatum nostrum aspernatur magnam qui.
-          </Block>
+          <Block className="mb-3">{data.user.bio}</Block>
           <div className="relative mb-3 flex px-3 md:px-0">
             <div className="flex-auto">
               <div className="flex flex-auto items-center">

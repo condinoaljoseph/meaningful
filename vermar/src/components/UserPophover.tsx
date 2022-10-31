@@ -55,8 +55,8 @@ export const UserPophover = ({ user }: { user: User }) => {
           <Link href={`/${user.username}`}>
             <a>
               <div className="flex items-center">
-                <AvatarUser user={user.username} size="28" />
-                <span className="ml-2 text-skin-link">{user.username}</span>
+                <AvatarUser src={user.image} size="28" />
+                <span className="ml-2 text-skin-link">{user.displayName}</span>
               </div>
             </a>
           </Link>
@@ -72,14 +72,14 @@ export const UserPophover = ({ user }: { user: User }) => {
               <div className="p-4">
                 <div className="flex">
                   <div>
-                    <AvatarUser user={user.username} size="69" />
+                    <AvatarUser src={user.image} size="69" />
                   </div>
                   <div>
                     <div className="truncate px-3 text-lg font-semibold leading-10 text-skin-heading">
-                      {user.username}
+                      {user.displayName}
                     </div>
                     <div className="flex px-3 min-w-0 cursor-pointer items-center rounded-full text-xs">
-                      <div className="truncate">2 Followers</div>
+                      <div className="truncate">{user.username}</div>
                     </div>
                   </div>
                 </div>

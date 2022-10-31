@@ -26,11 +26,11 @@ export const NavbarAccount = () => {
   ) : data?.me ? (
     <MenuAccount>
       <AvatarUser
-        user={data?.me?.username}
+        src={data?.me?.image}
         size="18"
         className="-mr-1 -ml-1 sm:mr-2 md:mr-2 lg:mr-2 xl:mr-2"
       />
-      <span className="hidden sm:block">{data?.me?.username}</span>
+      <span className="hidden sm:block">{data?.me?.displayName}</span>
     </MenuAccount>
   ) : (
     <>

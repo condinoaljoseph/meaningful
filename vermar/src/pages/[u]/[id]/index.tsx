@@ -51,11 +51,11 @@ const Post = () => {
 
               <div className="mb-4 flex flex-col sm:flex-row sm:space-x-1">
                 <div className="mb-1 flex items-center sm:mb-0">
-                  <AvatarUser user={data?.post?.creator.username} size="28" />
+                  <AvatarUser src={data?.post?.creator.image} size="28" />
                 </div>
                 <div className="flex grow items-center space-x-1 justify-between">
                   <span className="ml-2 text-skin-link">
-                    {data?.post?.creator.username}
+                    {data?.post?.creator.displayName}
                   </span>
                   <div className="flex items-center space-x-4">
                     <ButtonShare />
@@ -107,18 +107,18 @@ const Post = () => {
                 <div className="block px-4 pt-4 text-center md:flex lg:block lg:px-0 lg:pt-0">
                   <div className="flex lg:block">
                     <AvatarUser
-                      user={data?.post?.creator.username}
+                      src={data?.post?.creator.image}
                       size="80"
                       className="lg:my-3"
                     />
                     <div className="mx-3 flex flex-col justify-center truncate text-left lg:block lg:text-center">
                       <h3 className="mb-[2px] flex items-center lg:justify-center">
                         <div className="mr-1 truncate">
-                          {data?.post?.creator.username}
+                          {data?.post?.creator.displayName}
                         </div>
                       </h3>
                       <div className="mb-[12px] text-skin-text">
-                        2 followers
+                        {data?.post.creator.username}
                       </div>
                     </div>
                   </div>
