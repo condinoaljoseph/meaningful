@@ -15,11 +15,15 @@ import { ButtonMore } from "../../../components/ButtonMore";
 import withApollo from "../../../utils/withApollo";
 import { Layout } from "../../../components/Layout";
 import Error from "next/error";
+import { useHasMounted } from "../../../composables/useHasMounted";
+import { UserPophover } from "../../../components/UserPophover";
 
 const Post = () => {
   const {
     query: { id },
   } = useRouter();
+
+  const hasMounted = useHasMounted();
 
   const { data, loading } = usePostQuery({
     variables: { id: parseInt(id as string) },
@@ -50,13 +54,8 @@ const Post = () => {
               </h1>
 
               <div className="mb-4 flex flex-col sm:flex-row sm:space-x-1">
-                <div className="mb-1 flex items-center sm:mb-0">
-                  <AvatarUser src={data?.post?.creator.image} size="28" />
-                </div>
                 <div className="flex grow items-center space-x-1 justify-between">
-                  <span className="ml-2 text-skin-link">
-                    {data?.post?.creator.displayName}
-                  </span>
+                  {hasMounted && <UserPophover user={data.post.creator} />}
                   <div className="flex items-center space-x-4">
                     <ButtonShare />
                     <ButtonMore
