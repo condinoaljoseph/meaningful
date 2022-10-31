@@ -22,8 +22,21 @@ export class User extends BaseEntity {
   @Column({ unique: true })
   username!: string;
 
+  @Field()
+  @Column({ unique: true })
+  email!: string;
+
+  @Field()
   @Column()
-  password!: string;
+  displayName: string;
+
+  @Field()
+  @Column()
+  bio: string;
+
+  @Field()
+  @Column()
+  image: string;
 
   @OneToMany(() => Post, (post) => post.creator)
   posts: Post[];

@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import "dotenv-safe/config";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
@@ -18,16 +19,16 @@ import { createConnection } from "typeorm";
 import path from "path";
 import { createUserLoader } from "./utils/createUserLoader";
 import { createReactionLoader } from "./utils/createReactionLoader";
+import passport from "passport";
+import { Strategy as GithubStrategy } from "passport-github2";
 
 const main = async () => {
-  const redis = new Redis();
+  const redis = new Redis(process.env.REDIS_URL);
   const RedisStore = connectRedis(session);
 
   await createConnection({
     type: "postgres",
-    username: "postgres",
-    password: "postgres",
-    database: "meaningful",
+    url: process.env.DATABASE_URL,
     synchronize: true,
     logging: true,
     entities: [User, Post, Reaction],
@@ -59,6 +60,57 @@ const main = async () => {
     })
   );
 
+  passport.use(
+    new GithubStrategy(
+      {
+        clientID: process.env.GITHUB_CLIENT_ID || "",
+        clientSecret: process.env.GITHUB_CLIENT_SECRET || "",
+        callbackURL: "http://localhost:4000/oauth/github",
+      },
+      async (
+        accessToken: string,
+        refreshToken: string,
+        profile: any,
+        cb: any
+      ) => {
+        let user = await User.findOne({ email: profile._json.email });
+
+        if (!user) {
+          user = await User.create({
+            username: profile.username,
+            email: profile._json.email,
+            displayName: profile.displayName,
+            image: profile._json.avatar_url,
+            bio: profile._json.bio,
+          }).save();
+        }
+
+        cb(null, { user, accessToken, refreshToken });
+      }
+    )
+  );
+
+  app.use(passport.initialize());
+
+  app.get(
+    "/auth/github",
+    passport.authenticate("github", { scope: ["user:email"], session: false })
+  );
+
+  app.get(
+    "/oauth/github",
+    passport.authenticate("github", { session: false }),
+    (req: any, res) => {
+      if (req.user.user.id && req.session) {
+        req.session.userId = req.user.user.id;
+        req.session.accessToken = req.user.accessToken;
+        req.session.refreshToken = req.user.refreshToken;
+      }
+
+      res.redirect("http://localhost:3000/");
+    }
+  );
+
   const server = new ApolloServer({
     schema: await buildSchema({
       resolvers: [UserResolver, PostResolver, ReactionResolver],
@@ -76,8 +128,8 @@ const main = async () => {
   await server.start();
   server.applyMiddleware({ app, cors: false });
 
-  app.listen(4000, () => {
-    console.log("server running on port 4000");
+  app.listen(process.env.PORT, () => {
+    console.log("server running on port " + process.env.PORT);
   });
 };
 
