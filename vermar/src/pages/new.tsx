@@ -61,8 +61,8 @@ const New = () => {
               </>
             ) : (
               <>
-                <h1 className="w-full break-all">{title || "Untitled"}</h1>
-                <div className="mb-2">
+                <h1 className="w-full break-all mb-4">{title || "Untitled"}</h1>
+                <div className="min-h-[385px]">
                   <Markdown source={source} />
                 </div>
               </>
