@@ -20,10 +20,10 @@ export const ModalProfileForm = ({
   open: boolean;
   onClose: () => void;
 }) => {
-  const form = useForm({
+  const form = useForm<UpdateUserRequest>({
     defaultValues: {
-      displayName: user.displayName,
-      bio: user.bio,
+      displayName: user.displayName || "",
+      bio: user.bio || "",
     },
   });
 
