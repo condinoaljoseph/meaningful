@@ -1,7 +1,27 @@
 import { User } from "../entities/User";
-import { Arg, Mutation, Query, Resolver, Ctx } from "type-graphql";
+import {
+  Arg,
+  Mutation,
+  Query,
+  Resolver,
+  Ctx,
+  UseMiddleware,
+  Field,
+  InputType,
+} from "type-graphql";
 import { AppContext } from "../types";
 import { COOKIE_NAME } from "../constants";
+import { isAuth } from "../middleware/isAuth";
+import { getConnection } from "typeorm";
+
+@InputType()
+class UpdateUserRequest {
+  @Field()
+  displayName: string;
+
+  @Field()
+  bio: string;
+}
 
 @Resolver()
 export class UserResolver {
@@ -45,5 +65,26 @@ export class UserResolver {
         resolve(true);
       });
     });
+  }
+
+  @Mutation(() => User, { nullable: true })
+  @UseMiddleware(isAuth)
+  async updateUser(
+    @Arg("request") request: UpdateUserRequest,
+    @Ctx() ctx: AppContext
+  ): Promise<User> {
+    const { displayName, bio } = request;
+
+    const result = await getConnection()
+      .createQueryBuilder()
+      .update(User)
+      .set({ displayName, bio })
+      .where("id = :id", {
+        id: ctx.req.session.userId,
+      })
+      .returning("*")
+      .execute();
+
+    return result.raw[0];
   }
 }

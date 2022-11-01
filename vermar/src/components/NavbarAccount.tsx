@@ -17,7 +17,7 @@ export const NavbarAccount = () => {
         setUser(null);
       }
 
-      setUser(data?.me);
+      setUser(data.me!);
     },
   });
 

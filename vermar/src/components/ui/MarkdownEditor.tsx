@@ -12,7 +12,7 @@ interface Props extends ComponentProps<"textarea"> {
   count?: number;
 }
 
-export const TextArea = forwardRef<HTMLTextAreaElement, Props>(
+export const MarkdownEditor = forwardRef<HTMLTextAreaElement, Props>(
   function TextArea(
     { label, limit = 14000, className, error, count, ...props },
     ref

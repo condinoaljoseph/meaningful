@@ -1,4 +1,5 @@
 import create from "zustand";
+import { User } from "../generated/graphql";
 
 interface AppState {
   showSidebar: boolean;
@@ -14,14 +15,9 @@ export const useAppStore = create<AppState>((set) => ({
   setShowAuthModal: (showAuthModal) => set(() => ({ showAuthModal })),
 }));
 
-interface User {
-  id: number;
-  username: string;
-}
-
 interface AppPersistState {
-  user: User | null | undefined;
-  setUser: (user: User | null | undefined) => void;
+  user: User | null;
+  setUser: (user: User | null) => void;
 }
 
 export const useAppPersistStore = create<AppPersistState>((set) => ({

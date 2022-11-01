@@ -3,8 +3,10 @@ import clsx from "clsx";
 import Error from "next/error";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import { ButtonFollow } from "../../components/ButtonFollow";
 import { Layout } from "../../components/Layout";
+import { ModalProfileForm } from "../../components/ModalProfileForm";
 import { PostsList } from "../../components/PostsList";
 import { AvatarUser } from "../../components/ui/AvatarUser";
 import { Block } from "../../components/ui/Block";
@@ -20,6 +22,8 @@ const Profile = () => {
     query: { u },
     pathname,
   } = useRouter();
+
+  const [open, setIsOpen] = useState<boolean>(false);
 
   const hasMounted = useHasMounted();
   const user = useAppPersistStore((state) => state.user);
@@ -83,7 +87,14 @@ const Profile = () => {
 
                     {user?.username === u && hasMounted ? (
                       <div className="flex flex-grow items-start justify-end gap-x-2 lg:mb-4 lg:justify-center">
-                        <Button>Edit profile</Button>
+                        <Button onClick={() => setIsOpen(true)}>
+                          Edit profile
+                        </Button>
+                        <ModalProfileForm
+                          open={open}
+                          onClose={() => setIsOpen(false)}
+                          user={user!}
+                        />
                       </div>
                     ) : (
                       <div className="flex flex-grow items-start justify-end gap-x-2 lg:mb-4 lg:justify-center">
