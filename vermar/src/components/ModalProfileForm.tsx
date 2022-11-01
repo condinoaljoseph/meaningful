@@ -9,7 +9,7 @@ import { Button } from "./ui/Button";
 import { Form } from "./ui/Form";
 import { Input } from "./ui/Input";
 import { Modal } from "./ui/Modal";
-import { TextArea } from "./ui/TextArea";
+import { BaseTextArea } from "./ui/BaseTextArea";
 
 export const ModalProfileForm = ({
   user,
@@ -53,7 +53,7 @@ export const ModalProfileForm = ({
             {...form.register("displayName")}
           />
           <div>
-            <TextArea
+            <BaseTextArea
               label="Bio"
               placeholder="Tell your story"
               className="s-input !rounded-3xl"
