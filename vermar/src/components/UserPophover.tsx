@@ -52,14 +52,10 @@ export const UserPophover = ({ user }: { user: User }) => {
           onMouseEnter={open}
           onMouseLeave={delayClose}
         >
-          <Link href={`/${user.username}`}>
-            <a>
-              <div className="flex items-center">
-                <AvatarUser src={user.image} size="28" />
-                <span className="ml-2 text-skin-link">{user.displayName}</span>
-              </div>
-            </a>
-          </Link>
+          <div className="flex items-center">
+            <AvatarUser src={user.image} size="28" />
+            <span className="ml-2 text-skin-link">{user.displayName}</span>
+          </div>
         </Popover.Button>
         <Popover.Panel
           static
