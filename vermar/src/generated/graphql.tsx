@@ -119,19 +119,21 @@ export type UpdateUserRequest = {
 
 export type User = {
   __typename?: 'User';
-  bio: Scalars['String'];
+  bio?: Maybe<Scalars['String']>;
+  blog?: Maybe<Scalars['String']>;
   createdAt: Scalars['String'];
-  displayName: Scalars['String'];
-  email: Scalars['String'];
+  displayName?: Maybe<Scalars['String']>;
   id: Scalars['Float'];
   image: Scalars['String'];
+  location?: Maybe<Scalars['String']>;
+  twitterUsername?: Maybe<Scalars['String']>;
   updatedAt: Scalars['String'];
   username: Scalars['String'];
 };
 
-export type PostFragmentFragment = { __typename?: 'Post', id: number, title: string, content: string, creatorId: number, likes: number, createdAt: string, updatedAt: string, likeStatus: boolean, creator: { __typename?: 'User', id: number, email: string, username: string, displayName: string, bio: string, image: string, createdAt: string, updatedAt: string } };
+export type PostFragmentFragment = { __typename?: 'Post', id: number, title: string, content: string, creatorId: number, likes: number, createdAt: string, updatedAt: string, likeStatus: boolean, creator: { __typename?: 'User', id: number, username: string, displayName?: string | null, bio?: string | null, image: string, location?: string | null, blog?: string | null, twitterUsername?: string | null, createdAt: string, updatedAt: string } };
 
-export type UserFragmentFragment = { __typename?: 'User', id: number, email: string, username: string, displayName: string, bio: string, image: string, createdAt: string, updatedAt: string };
+export type UserFragmentFragment = { __typename?: 'User', id: number, username: string, displayName?: string | null, bio?: string | null, image: string, location?: string | null, blog?: string | null, twitterUsername?: string | null, createdAt: string, updatedAt: string };
 
 export type AddReactionMutationVariables = Exact<{
   value: Scalars['Boolean'];
@@ -175,42 +177,44 @@ export type UpdateUserMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'User', id: number, email: string, username: string, displayName: string, bio: string, image: string, createdAt: string, updatedAt: string } | null };
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'User', id: number, username: string, displayName?: string | null, bio?: string | null, image: string, location?: string | null, blog?: string | null, twitterUsername?: string | null, createdAt: string, updatedAt: string } | null };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, email: string, username: string, displayName: string, bio: string, image: string, createdAt: string, updatedAt: string } | null };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, username: string, displayName?: string | null, bio?: string | null, image: string, location?: string | null, blog?: string | null, twitterUsername?: string | null, createdAt: string, updatedAt: string } | null };
 
 export type PostQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type PostQuery = { __typename?: 'Query', post?: { __typename?: 'Post', id: number, title: string, content: string, creatorId: number, likes: number, createdAt: string, updatedAt: string, likeStatus: boolean, creator: { __typename?: 'User', id: number, email: string, username: string, displayName: string, bio: string, image: string, createdAt: string, updatedAt: string } } | null };
+export type PostQuery = { __typename?: 'Query', post?: { __typename?: 'Post', id: number, title: string, content: string, creatorId: number, likes: number, createdAt: string, updatedAt: string, likeStatus: boolean, creator: { __typename?: 'User', id: number, username: string, displayName?: string | null, bio?: string | null, image: string, location?: string | null, blog?: string | null, twitterUsername?: string | null, createdAt: string, updatedAt: string } } | null };
 
 export type PostsQueryVariables = Exact<{
   request: PostsQueryRequest;
 }>;
 
 
-export type PostsQuery = { __typename?: 'Query', posts: { __typename?: 'PaginatedPosts', hasMore: boolean, posts: Array<{ __typename?: 'Post', id: number, title: string, content: string, creatorId: number, likes: number, createdAt: string, updatedAt: string, likeStatus: boolean, creator: { __typename?: 'User', id: number, email: string, username: string, displayName: string, bio: string, image: string, createdAt: string, updatedAt: string } }> } };
+export type PostsQuery = { __typename?: 'Query', posts: { __typename?: 'PaginatedPosts', hasMore: boolean, posts: Array<{ __typename?: 'Post', id: number, title: string, content: string, creatorId: number, likes: number, createdAt: string, updatedAt: string, likeStatus: boolean, creator: { __typename?: 'User', id: number, username: string, displayName?: string | null, bio?: string | null, image: string, location?: string | null, blog?: string | null, twitterUsername?: string | null, createdAt: string, updatedAt: string } }> } };
 
 export type UserQueryVariables = Exact<{
   username: Scalars['String'];
 }>;
 
 
-export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, email: string, username: string, displayName: string, bio: string, image: string, createdAt: string, updatedAt: string } | null };
+export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, username: string, displayName?: string | null, bio?: string | null, image: string, location?: string | null, blog?: string | null, twitterUsername?: string | null, createdAt: string, updatedAt: string } | null };
 
 export const UserFragmentFragmentDoc = gql`
     fragment UserFragment on User {
   id
-  email
   username
   displayName
   bio
   image
+  location
+  blog
+  twitterUsername
   createdAt
   updatedAt
 }

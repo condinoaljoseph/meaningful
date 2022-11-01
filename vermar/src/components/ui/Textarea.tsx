@@ -9,7 +9,7 @@ interface Props extends ComponentProps<"textarea"> {
   error?: boolean;
 }
 
-export const BaseTextArea = forwardRef<HTMLTextAreaElement, Props>(
+export const Textarea = forwardRef<HTMLTextAreaElement, Props>(
   function TextArea({ label = 14000, className, error, ...props }, ref) {
     const id = useId();
 

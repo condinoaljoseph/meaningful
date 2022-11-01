@@ -73,15 +73,18 @@ const main = async () => {
         profile: any,
         cb: any
       ) => {
-        let user = await User.findOne({ email: profile._json.email });
+        let user = await User.findOne({ githubId: profile.id });
 
         if (!user) {
           user = await User.create({
             username: profile.username,
-            email: profile._json.email,
+            githubId: profile.id,
             displayName: profile.displayName,
-            image: profile._json.avatar_url,
             bio: profile._json.bio,
+            image: profile._json.avatar_url,
+            location: profile._json.location,
+            blog: profile._json.blog,
+            twitterUsername: profile._json.twitterUsername,
           }).save();
         }
 
@@ -94,7 +97,7 @@ const main = async () => {
 
   app.get(
     "/auth/github",
-    passport.authenticate("github", { scope: ["user:email"], session: false })
+    passport.authenticate("github", { scope: ["user"], session: false })
   );
 
   app.get(

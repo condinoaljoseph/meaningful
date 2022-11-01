@@ -9,7 +9,7 @@ import { Button } from "./ui/Button";
 import { Form } from "./ui/Form";
 import { Input } from "./ui/Input";
 import { Modal } from "./ui/Modal";
-import { BaseTextArea } from "./ui/BaseTextArea";
+import { Textarea } from "./ui/Textarea";
 
 export const ModalProfileForm = ({
   user,
@@ -20,10 +20,10 @@ export const ModalProfileForm = ({
   open: boolean;
   onClose: () => void;
 }) => {
-  const form = useForm({
+  const form = useForm<UpdateUserRequest>({
     defaultValues: {
-      displayName: user.displayName,
-      bio: user.bio,
+      displayName: user.displayName || "",
+      bio: user.bio || "",
     },
   });
 
@@ -53,7 +53,7 @@ export const ModalProfileForm = ({
             {...form.register("displayName")}
           />
           <div>
-            <BaseTextArea
+            <Textarea
               label="Bio"
               placeholder="Tell your story"
               className="s-input !rounded-3xl"

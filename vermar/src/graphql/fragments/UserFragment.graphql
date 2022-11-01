@@ -1,10 +1,12 @@
 fragment UserFragment on User {
   id
-  email
   username
   displayName
   bio
   image
+  location
+  blog
+  twitterUsername
   createdAt
   updatedAt
 }
