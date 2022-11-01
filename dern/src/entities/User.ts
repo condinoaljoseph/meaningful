@@ -22,21 +22,32 @@ export class User extends BaseEntity {
   @Column({ unique: true })
   username!: string;
 
-  @Field()
   @Column({ unique: true })
-  email!: string;
+  githubId: string;
 
-  @Field()
-  @Column()
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
   displayName: string;
 
-  @Field()
-  @Column()
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
   bio: string;
 
-  @Field()
-  @Column()
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
   image: string;
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  location: string;
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  blog: string;
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  twitterUsername: string;
 
   @OneToMany(() => Post, (post) => post.creator)
   posts: Post[];
