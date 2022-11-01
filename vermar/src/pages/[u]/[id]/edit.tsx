@@ -9,7 +9,7 @@ import { Button } from "../../../components/ui/Button";
 import { Form } from "../../../components/ui/Form";
 import { Input } from "../../../components/ui/Input";
 import { Markdown } from "../../../components/ui/Markdown";
-import { TextArea } from "../../../components/ui/Textarea";
+import { MarkdownEditor } from "../../../components/ui/MarkdownEditor";
 import {
   PostInput,
   usePostQuery,
@@ -88,7 +88,7 @@ const Edit = () => {
                 <h1 className="mb-4">Edit post</h1>
                 <Form form={form} onSubmit={onSubmit}>
                   <Input label="Title" {...form.register("title")} />
-                  <TextArea
+                  <MarkdownEditor
                     label="Content"
                     {...form.register("content")}
                     count={source.length}
