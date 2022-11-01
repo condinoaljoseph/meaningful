@@ -1486,11 +1486,6 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
-"@types/highlight.js@^9.7.0":
-  version "9.12.4"
-  resolved "https://registry.yarnpkg.com/@types/highlight.js/-/highlight.js-9.12.4.tgz#8c3496bd1b50cc04aeefd691140aa571d4dbfa34"
-  integrity sha512-t2szdkwmg2JJyuCM20e8kR2X59WCE5Zkl4bzm1u1Oukjm79zpbiAv+QjnwLnuuV0WHEcX2NgUItu0pAMKuOPww==
-
 "@types/ioredis@*", "@types/ioredis@^4.28.10":
   version "4.28.10"
   resolved "https://registry.yarnpkg.com/@types/ioredis/-/ioredis-4.28.10.tgz#40ceb157a4141088d1394bb87c98ed09a75a06ff"
@@ -1641,14 +1636,6 @@
   integrity sha512-bI+gth8La8Wg/QCR1+V1fhrL9+LZUSWfcqpOj2Kc80ZQ4ffbdL173vQd5wovmoV9i071FU9oP2g6etLuEwb6Rg==
   dependencies:
     redis "*"
-
-"@types/remarkable@^2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@types/remarkable/-/remarkable-2.0.3.tgz#ba2e5edada8f0fe64c658beb2127e06ac0b9c1c8"
-  integrity sha512-QQUBeYApuHCNl9Br6ZoI3PlKmwZ69JHrlJktJXnjxobia9liZgsI70fm8PnCqVFAcefYK+9PGzR5L/hzCslNYQ==
-  dependencies:
-    "@types/highlight.js" "^9.7.0"
-    highlight.js "^9.7.0"
 
 "@types/scheduler@*":
   version "0.16.2"
@@ -2031,7 +2018,7 @@ arg@^5.0.2:
   resolved "https://registry.yarnpkg.com/arg/-/arg-5.0.2.tgz#c81433cc427c92c4dcf4865142dbca6f15acd59c"
   integrity sha512-PYjyFOLKQ9y57JvQ6QLo8dAgNqswh8M1RMJYdQduT6xbWSgK36P/Z/v+p888pM69jMMfS8Xd8F6I1kQ/I9HUGg==
 
-argparse@^1.0.10, argparse@^1.0.7:
+argparse@^1.0.7:
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/argparse/-/argparse-1.0.10.tgz#bcd6791ea5ae09725e17e5ad988134cd40b3d911"
   integrity sha512-o5Roy6tNG4SL/FOkCAN6RzjiakZS25RLYFrcMttJqbdd8BWrnA+fGz57iN5Pb06pvBGvl5gQ0B48dJlslXvoTg==
@@ -2132,13 +2119,6 @@ auto-bind@~4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/auto-bind/-/auto-bind-4.0.0.tgz#e3589fc6c2da8f7ca43ba9f84fa52a744fc997fb"
   integrity sha512-Hdw8qdNiqdJ8LqT0iK0sVzkFbzg6fhnQqqfWhBDxcHZvU75+B+ayzTy8x+k5Ix0Y92XOhOUlx74ps+bA6BeYMQ==
-
-autolinker@^3.11.0:
-  version "3.16.2"
-  resolved "https://registry.yarnpkg.com/autolinker/-/autolinker-3.16.2.tgz#6bb4f32432fc111b65659336863e653973bfbcc9"
-  integrity sha512-JiYl7j2Z19F9NdTmirENSUUIIL/9MytEWtmzhfmsKPCp9E+G35Y0UNCMoM9tFigxT59qSc8Ml2dlZXOCVTYwuA==
-  dependencies:
-    tslib "^2.3.0"
 
 autoprefixer@^10.4.12:
   version "10.4.12"
@@ -3791,11 +3771,6 @@ highlight.js@^10.7.1:
   version "10.7.3"
   resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-10.7.3.tgz#697272e3991356e40c3cac566a74eef681756531"
   integrity sha512-tzcUFauisWKNHaRkN4Wjl/ZA07gENAjFl3J/c480dprkGTg5EQstgaNFqBfUqCq54kZRIEcreTsAgF/m2quD7A==
-
-highlight.js@^9.7.0:
-  version "9.18.5"
-  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.18.5.tgz#d18a359867f378c138d6819edfc2a8acd5f29825"
-  integrity sha512-a5bFyofd/BHCX52/8i8uJkjr9DYwXIPnM/plwI6W7ezItLGqzt7X2G2nXuYSfsIJdkwwj/g9DG1LkcGJI/dDoA==
 
 hoist-non-react-statics@^3.3.2:
   version "3.3.2"
@@ -5521,14 +5496,6 @@ relay-runtime@12.0.0:
     "@babel/runtime" "^7.0.0"
     fbjs "^3.0.0"
     invariant "^2.2.4"
-
-remarkable@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/remarkable/-/remarkable-2.0.1.tgz#280ae6627384dfb13d98ee3995627ca550a12f31"
-  integrity sha512-YJyMcOH5lrR+kZdmB0aJJ4+93bEojRZ1HGDn9Eagu6ibg7aVZhc3OWbbShRid+Q5eAfsEqWxpe+g5W5nYNfNiA==
-  dependencies:
-    argparse "^1.0.10"
-    autolinker "^3.11.0"
 
 remedial@^1.0.7:
   version "1.0.8"
