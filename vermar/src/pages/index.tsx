@@ -1,31 +1,17 @@
-import { ExclamationCircleIcon } from "@heroicons/react/24/solid";
-import type { NextPage } from "next";
+import { Layout } from "../components/Layout";
 import { PostsList } from "../components/PostsList";
-import { Block } from "../components/ui/Block";
-import { useHelloQuery } from "../generated/graphql";
+import withApollo from "../utils/withApollo";
 
-const Home: NextPage = () => {
-  const { data } = useHelloQuery();
-
-  console.log(data);
-
+const Home = () => {
   return (
-    <div className="lg:flex">
-      <div className="relative float-left w-full pr-0 lg:w-3/4 lg:pr-5">
-        <PostsList />
+    <Layout>
+      <div className="lg:flex">
+        <div className="relative w-full pr-0 lg:w-3/4 lg:pr-5">
+          <PostsList limit={10} />
+        </div>
       </div>
-
-      <div className="w-full lg:w-4/12 lg:min-w-[321px]">
-        <Block className="lg:fixed lg:w-[320px]">
-          <div className="p-4 leading-5 sm:leading-6">
-            <ExclamationCircleIcon className="w-[1em] h-[1em] inline mr-1" />
-            meaningful is still in the beta phase, things may break, please
-            handle us with care.
-          </div>
-        </Block>
-      </div>
-    </div>
+    </Layout>
   );
 };
 
-export default Home;
+export default withApollo({ ssr: true })(Home);

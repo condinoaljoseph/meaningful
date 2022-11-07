@@ -22,8 +22,32 @@ export class User extends BaseEntity {
   @Column({ unique: true })
   username!: string;
 
+  @Column({ unique: true })
+  githubId: string;
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  displayName: string;
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  bio: string;
+
+  @Field()
   @Column()
-  password!: string;
+  image: string;
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  location: string;
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  blog: string;
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  twitterUsername: string;
 
   @OneToMany(() => Post, (post) => post.creator)
   posts: Post[];

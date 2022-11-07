@@ -1,4 +1,3 @@
-import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import { ComponentProps, forwardRef, useId } from "react";
 
@@ -10,44 +9,29 @@ interface Props extends ComponentProps<"textarea"> {
   error?: boolean;
 }
 
-export const TextArea = forwardRef<HTMLTextAreaElement, Props>(
-  function TextArea({ label, className, error, ...props }, ref) {
+export const Textarea = forwardRef<HTMLTextAreaElement, Props>(
+  function TextArea({ label = 14000, className, error, ...props }, ref) {
     const id = useId();
 
     return (
       <div className="w-full">
-        <label
-          className="mb-[2px] flex items-center gap-1 text-skin-text"
-          htmlFor={id}
-        >
-          {label && <div>{label}</div>}
-        </label>
-        <div className="peer min-h-[240px] overflow-hidden rounded-t-xl border border-skin-border focus-within:border-skin-text">
-          <textarea
-            id={id}
-            className={clsx(
-              "s-input mt-0 h-full min-h-[240px] w-full !rounded-xl border-none pt-0 text-base",
-              { "!border-red": error },
-              { "cursor-not-allowed placeholder:!opacity-30": props.disabled },
-              className
-            )}
-            ref={ref}
-            {...props}
-          />
-        </div>
-        <div className="relative flex items-center justify-between rounded-b-xl border border-t-0 border-skin-border py-1 px-2 peer-focus-within:border-skin-text">
-          <span className="pointer-events-none relative pl-1 text-sm">
-            <span>Use markdown to write and format posts.</span>
-          </span>
-          <a
-            className="relative inline"
-            rel="noreferrer"
-            target="_blank"
-            href="https://docs.github.com/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax"
+        <div className="flex justify-between">
+          <label
+            className="mb-[2px] flex items-center gap-1 text-skin-text"
+            htmlFor={id}
           >
-            <QuestionMarkCircleIcon className="w-[1em] h-[1em]" />
-          </a>
+            {label && <div>{label}</div>}
+          </label>
         </div>
+        <textarea
+          id={id}
+          className={clsx(
+            "!mt-1 h-auto w-full rounded-3xl border border-skin-border py-3 px-4 focus-within:!border-skin-text hover:border-skin-text",
+            className
+          )}
+          ref={ref}
+          {...props}
+        />
         {props.name && <FieldError name={props.name} />}
       </div>
     );

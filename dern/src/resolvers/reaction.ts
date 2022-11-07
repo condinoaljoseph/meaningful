@@ -1,29 +1,43 @@
-import { Arg, Ctx, Int, Mutation, Resolver, UseMiddleware } from "type-graphql";
-import { AppDataSource } from "../data-source";
+import {
+  Arg,
+  Ctx,
+  Int,
+  Mutation,
+  registerEnumType,
+  Resolver,
+  UseMiddleware,
+} from "type-graphql";
 import { AppContext } from "../types";
 import { isAuth } from "../middleware/isAuth";
 import { Reaction, ReactionTypes } from "../entities/Reaction";
+import { getConnection } from "typeorm";
+
+registerEnumType(ReactionTypes, {
+  name: "ReactionTypes", // this one is mandatory
+});
 
 @Resolver()
 export class ReactionResolver {
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
-  async react(
+  async addReaction(
     @Arg("postId", () => Int) postId: number,
-    @Arg("type") type: ReactionTypes,
+    @Arg("type", () => ReactionTypes) type: ReactionTypes,
     @Arg("value") value: boolean,
     @Ctx() ctx: AppContext
   ): Promise<boolean> {
     const { userId } = ctx.req.session;
 
-    const reaction = await Reaction.findOneBy({
-      postId,
-      userId,
-      type,
+    const reaction = await Reaction.findOne({
+      where: {
+        postId,
+        userId,
+        type,
+      },
     });
 
     if (reaction && reaction.value !== value) {
-      await AppDataSource.transaction(async (tem) => {
+      await getConnection().transaction(async (tem) => {
         await tem.query(
           `
               update reaction
@@ -43,7 +57,7 @@ export class ReactionResolver {
         );
       });
     } else if (!reaction) {
-      await AppDataSource.transaction(async (tem) => {
+      await getConnection().transaction(async (tem) => {
         await tem.query(
           `
               insert into reaction ("userId", "postId", type, value) 

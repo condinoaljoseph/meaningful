@@ -1,13 +1,87 @@
-import { ArrowUpTrayIcon } from "@heroicons/react/24/solid";
+import { Float } from "@headlessui-float/react";
+import { Menu } from "@headlessui/react";
+import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
+import clsx from "clsx";
+import type { Placement } from "@floating-ui/dom";
+import { useCopy } from "../composables/useCopy";
 import { useRouter } from "next/router";
 
-export const ButtonShare = () => {
-  const router = useRouter();
+export const ButtonShare = ({
+  placement = "bottom-end",
+}: {
+  placement?: Placement;
+}) => {
+  const { copyToClipboard } = useCopy();
+  const { asPath } = useRouter();
 
   return (
-    <button className="flex cursor-pointer select-none items-center pr-1 hover:text-skin-link">
-      <ArrowUpTrayIcon className="h-[1.2em] w-[1.2em]" />
-      <span className="ml-1 hidden md:block">Share</span>
-    </button>
+    <Menu as="div" className="relative">
+      <Float
+        enter="transition ease-out duration-100"
+        enterFrom="transform opacity-0 scale-95"
+        enterTo="transform opacity-100 scale-100"
+        leave="transition ease-in duration-75"
+        leaveFrom="transform opacity-100 scale-100"
+        leaveTo="transform opacity-0 scale-95"
+        offset={8}
+        shift={6}
+        flip={16}
+        zIndex={50}
+        placement={placement}
+      >
+        <Menu.Button className="flex items-center rounded-full p-[6px] text-md text-skin-text transition-colors duration-200 hover:text-skin-link">
+          <ArrowUpTrayIcon className="w-[1em] h-[1em]" />
+        </Menu.Button>
+        <Menu.Items className="overflow-hidden z-50 rounded-2xl border bg-skin-header-bg shadow-lg outline-none">
+          <div className="no-scrollbar max-h-[300px] overflow-auto">
+            <Menu.Item>
+              {({ active }) => (
+                <div
+                  className={clsx(
+                    active
+                      ? "bg-skin-border text-skin-link"
+                      : "bg-skin-header-bg text-skin-text",
+                    "cursor-pointer whitespace-nowrap px-3 py-2"
+                  )}
+                  onClick={() =>
+                    copyToClipboard(`http://localhost:3000${asPath}`)
+                  }
+                >
+                  Copy link
+                </div>
+              )}
+            </Menu.Item>
+            <Menu.Item>
+              {({ active }) => (
+                <div
+                  className={clsx(
+                    active
+                      ? "bg-skin-border text-skin-link"
+                      : "bg-skin-header-bg text-skin-text",
+                    "cursor-pointer whitespace-nowrap px-3 py-2"
+                  )}
+                >
+                  Share to Twitter
+                </div>
+              )}
+            </Menu.Item>
+            <Menu.Item>
+              {({ active }) => (
+                <div
+                  className={clsx(
+                    active
+                      ? "bg-skin-border text-skin-link"
+                      : "bg-skin-header-bg text-skin-text",
+                    "cursor-pointer whitespace-nowrap px-3 py-2"
+                  )}
+                >
+                  Share to Facebook
+                </div>
+              )}
+            </Menu.Item>
+          </div>
+        </Menu.Items>
+      </Float>
+    </Menu>
   );
 };

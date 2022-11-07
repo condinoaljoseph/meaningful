@@ -1,152 +1,55 @@
 import { User } from "../entities/User";
 import {
   Arg,
-  Field,
-  InputType,
   Mutation,
   Query,
   Resolver,
-  ObjectType,
   Ctx,
+  UseMiddleware,
+  Field,
+  InputType,
 } from "type-graphql";
-import argon2 from "argon2";
-import { AppDataSource } from "../data-source";
 import { AppContext } from "../types";
 import { COOKIE_NAME } from "../constants";
+import { isAuth } from "../middleware/isAuth";
+import { getConnection } from "typeorm";
 
 @InputType()
-class UserPasswordInput {
+class UpdateUserRequest {
   @Field()
-  username: string;
-
-  @Field()
-  password: string;
-}
-
-@ObjectType()
-class FieldError {
-  @Field()
-  field: string;
+  displayName: string;
 
   @Field()
-  message: string;
-}
-
-@ObjectType()
-class UserResponse {
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[];
-
-  @Field(() => User, { nullable: true })
-  user?: User;
+  bio: string;
 }
 
 @Resolver()
 export class UserResolver {
   @Query(() => User, { nullable: true })
-  async me(@Ctx() ctx: AppContext): Promise<User | null> {
+  async user(@Arg("username") username: string): Promise<User | null> {
+    const user = await User.findOne({ where: { username } });
+
+    if (!user) {
+      return null;
+    }
+
+    return user;
+  }
+
+  @Query(() => [User])
+  async users(): Promise<User[]> {
+    return await User.find();
+  }
+
+  @Query(() => User, { nullable: true })
+  async me(@Ctx() ctx: AppContext) {
     const { userId } = ctx.req.session;
 
     if (!userId) {
       return null;
     }
 
-    return await User.findOneBy({ id: userId });
-  }
-
-  @Mutation(() => UserResponse)
-  async login(
-    @Arg("options") options: UserPasswordInput,
-    @Ctx() ctx: AppContext
-  ) {
-    const user = await User.findOneBy({ username: options.username });
-    if (!user) {
-      return {
-        errors: [
-          {
-            field: "username",
-            message: "username doesn't exist",
-          },
-        ],
-      };
-    }
-
-    const isValid = await argon2.verify(user.password, options.password);
-
-    if (!isValid) {
-      return {
-        errors: [
-          {
-            field: "password",
-            message: "incorrect password",
-          },
-        ],
-      };
-    }
-
-    ctx.req.session.userId = user.id;
-
-    return { user };
-  }
-
-  @Mutation(() => UserResponse)
-  async register(
-    @Arg("options") options: UserPasswordInput,
-    @Ctx() ctx: AppContext
-  ): Promise<UserResponse> {
-    if (options.username.length <= 2) {
-      return {
-        errors: [
-          {
-            field: "username",
-            message: "username length must be greater than 2",
-          },
-        ],
-      };
-    }
-
-    if (options.password.length <= 2) {
-      return {
-        errors: [
-          {
-            field: "username",
-            message: "password length must be greater than 2",
-          },
-        ],
-      };
-    }
-
-    const hashedPassword = await argon2.hash(options.password);
-    let user;
-
-    try {
-      const result = await AppDataSource.createQueryBuilder()
-        .insert()
-        .into(User)
-        .values({
-          username: options.username,
-          password: hashedPassword,
-        })
-        .returning("*")
-        .execute();
-
-      user = result.raw[0];
-    } catch (error) {
-      if (error.code === "23505") {
-        return {
-          errors: [
-            {
-              field: "username",
-              message: "username already taken",
-            },
-          ],
-        };
-      }
-    }
-
-    ctx.req.session.userId = user.id;
-
-    return { user };
+    return await User.findOne(userId);
   }
 
   @Mutation(() => Boolean)
@@ -162,5 +65,26 @@ export class UserResolver {
         resolve(true);
       });
     });
+  }
+
+  @Mutation(() => User, { nullable: true })
+  @UseMiddleware(isAuth)
+  async updateUser(
+    @Arg("request") request: UpdateUserRequest,
+    @Ctx() ctx: AppContext
+  ): Promise<User> {
+    const { displayName, bio } = request;
+
+    const result = await getConnection()
+      .createQueryBuilder()
+      .update(User)
+      .set({ displayName, bio })
+      .where("id = :id", {
+        id: ctx.req.session.userId,
+      })
+      .returning("*")
+      .execute();
+
+    return result.raw[0];
   }
 }

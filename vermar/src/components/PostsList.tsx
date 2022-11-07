@@ -1,29 +1,96 @@
+import { useRef } from "react";
+import { PostsQueryRequest, usePostsQuery } from "../generated/graphql";
 import { PostsItem } from "./PostsItem";
 import { Block } from "./ui/Block";
+import { Button } from "./ui/Button";
+import { useInView } from "react-cool-inview";
 
-export const PostsList = () => {
+export const PostsList = ({
+  limit = 10,
+  creatorId = null,
+}: PostsQueryRequest) => {
+  const loadMoreRef = useRef<boolean>();
+  const { data, loading, fetchMore, variables } = usePostsQuery({
+    variables: {
+      request: {
+        limit,
+        creatorId,
+      },
+    },
+    notifyOnNetworkStatusChange: true,
+  });
+
+  const { observe } = useInView({
+    onChange: async ({ inView }) => {
+      if (!inView || !loadMoreRef.current) {
+        return;
+      }
+
+      if (data && data?.posts.hasMore) {
+        await fetchMore({
+          variables: {
+            request: {
+              limit: variables?.request.limit,
+              cursor: data?.posts.posts[data.posts.posts.length - 1].createdAt,
+              creatorId: variables?.request.creatorId,
+            },
+          },
+        });
+      }
+    },
+  });
+
   return (
-    <div className="space-y-4">
-      <PostsItem
-        title="Lorem ipsum dolor sit amet."
-        content="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium vero id, reprehenderit quidem dolorum est harum vel repudiandae. Accusamus, ducimus!"
-      />
-      <PostsItem
-        title="Lorem, ipsum."
-        content="Lorem ipsum dolor sit amet consectetur adipisicing."
-      />
-      <PostsItem
-        title="Lorem ipsum dolor sit."
-        content="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium vero id, reprehenderit quidem dolorum est harum vel repudiandae."
-      />
-      <PostsItem
-        title="Lorem, ipsum."
-        content="Lorem ipsum dolor sit amet consectetur adipisicing."
-      />
-      <PostsItem
-        title="Lorem ipsum dolor sit."
-        content="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium vero id, reprehenderit quidem dolorum est harum vel repudiandae."
-      />
-    </div>
+    <>
+      {!data && loading ? (
+        <Block>
+          <div className="lazy-loading mb-2 rounded-md w-[80%] h-[20px]" />
+          <div className="lazy-loading rounded-md w-[50%] h-[20px]" />
+        </Block>
+      ) : (
+        <div className="space-y-4">
+          {data?.posts.posts.map((post, i) => (
+            <PostsItem key={`${post.id}_${i}`} post={post} />
+          ))}
+
+          {data && data?.posts.hasMore ? (
+            <>
+              {!loadMoreRef.current ? (
+                <div className="px-4 text-center md:px-0">
+                  <Button
+                    className="w-full"
+                    loading={loading}
+                    onClick={() => {
+                      loadMoreRef.current = true;
+
+                      fetchMore({
+                        variables: {
+                          request: {
+                            limit: variables?.request.limit,
+                            cursor:
+                              data.posts.posts[data.posts.posts.length - 1]
+                                .createdAt,
+                            creatorId: variables?.request.creatorId,
+                          },
+                        },
+                      });
+                    }}
+                  >
+                    Load more
+                  </Button>
+                </div>
+              ) : (
+                <div ref={observe}>
+                  <Block>
+                    <div className="lazy-loading mb-2 rounded-md w-[80%] h-[20px]" />
+                    <div className="lazy-loading rounded-md w-[50%] h-[20px]" />
+                  </Block>
+                </div>
+              )}
+            </>
+          ) : null}
+        </div>
+      )}
+    </>
   );
 };

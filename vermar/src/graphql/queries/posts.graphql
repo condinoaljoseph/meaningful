@@ -1,0 +1,8 @@
+query Posts($request: PostsQueryRequest!) {
+  posts(request: $request) {
+    posts {
+      ...PostFragment
+    }
+    hasMore
+  }
+}

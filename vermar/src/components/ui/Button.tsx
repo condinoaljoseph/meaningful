@@ -5,6 +5,7 @@ import {
   forwardRef,
   ReactNode,
 } from "react";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 interface Props
   extends DetailedHTMLProps<
@@ -13,13 +14,12 @@ interface Props
   > {
   primary?: boolean;
   loading?: boolean;
-  icon?: ReactNode;
   children?: ReactNode;
   className?: string;
 }
 
 export const Button = forwardRef<HTMLButtonElement, Props>(function Button(
-  { className = "", primary = false, loading, icon, children, ...rest },
+  { className = "", primary = false, loading, children, ...rest },
   ref
 ) {
   return (
@@ -31,16 +31,14 @@ export const Button = forwardRef<HTMLButtonElement, Props>(function Button(
         {
           "text-white bg-primary border border-primary hover:brightness-95":
             primary,
-          "flex items-center space-x-2": icon && children,
         },
         className
       )}
-      disabled={loading}
+      disabled={rest.disabled || loading}
       type={rest.type}
       {...rest}
     >
-      {icon}
-      <div>{children}</div>
+      {loading ? <LoadingSpinner /> : children}
     </button>
   );
 });
