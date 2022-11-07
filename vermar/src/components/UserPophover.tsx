@@ -75,7 +75,7 @@ export const UserPophover = ({ user }: { user: User }) => {
                       {user.displayName}
                     </div>
                     <div className="flex px-3 min-w-0 cursor-pointer items-center rounded-full text-sm text-skin-text">
-                      <div className="truncate">{user.username}</div>
+                      <div className="truncate">@{user.username}</div>
                     </div>
                   </div>
                 </div>

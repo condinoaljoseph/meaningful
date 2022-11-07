@@ -42,9 +42,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
             <Navbar />
           </div>
           <div id="content" className="pb-6 pt-4">
-            <div>
-              <Container>{children}</Container>
-            </div>
+            <Container>{children}</Container>
           </div>
         </div>
       </div>

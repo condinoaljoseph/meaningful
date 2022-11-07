@@ -1,4 +1,8 @@
-import { BellAlertIcon } from "@heroicons/react/24/outline";
+import {
+  BellAlertIcon,
+  CodeBracketIcon,
+  GlobeAltIcon,
+} from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import Error from "next/error";
 import Link from "next/link";
@@ -80,7 +84,7 @@ const Profile = () => {
                           </div>
                         </h3>
                         <div className="mb-[12px] text-skin-text">
-                          {data.user.username}
+                          <a>@{data.user.username}</a>
                         </div>
                       </div>
                     </div>
@@ -138,6 +142,24 @@ const Profile = () => {
                       </a>
                     </Link>
                   </div>
+
+                  <div className="my-3 items-center space-x-3 px-4 hidden lg:flex">
+                    <a
+                      href={`https://github.com/${data.user.username}`}
+                      className="text-md text-skin-text hover:text-skin-link"
+                    >
+                      <CodeBracketIcon className="w-[1.2em] h-[1.2em]" />
+                    </a>
+
+                    {data.user.blog && (
+                      <a
+                        href={data.user.blog}
+                        className="text-md text-skin-text hover:text-skin-link"
+                      >
+                        <GlobeAltIcon className="w-[1.2em] h-[1.2em]" />
+                      </a>
+                    )}
+                  </div>
                 </div>
               </Block>
             </div>
@@ -145,6 +167,8 @@ const Profile = () => {
         </div>
 
         <div className="relative w-full pl-0 lg:w-3/4 lg:pl-5">
+          <Block className="mb-3">{data.user.bio}</Block>
+
           <div className="relative mb-3 flex px-3 md:px-0">
             <div className="flex-auto">
               <div className="flex flex-auto items-center">

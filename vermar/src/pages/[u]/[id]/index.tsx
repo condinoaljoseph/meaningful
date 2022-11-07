@@ -17,6 +17,8 @@ import { Layout } from "../../../components/Layout";
 import Error from "next/error";
 import { useHasMounted } from "../../../composables/useHasMounted";
 import { UserPophover } from "../../../components/UserPophover";
+import { ButtonBack } from "../../../components/ButtonBack";
+import Link from "next/link";
 
 const Post = () => {
   const {
@@ -48,54 +50,59 @@ const Post = () => {
               <div className="lazy-loading rounded-md w-[65px] h-[28px]" />
             </div>
           ) : (
-            <div className="px-3 md:px-0">
-              <h1 className="mb-3 break-words text-xl leading-8 sm:text-2xl">
-                {data?.post?.title}
-              </h1>
+            <>
+              <div className="mb-3 px-3 md:px-0">
+                <ButtonBack />
+              </div>
+              <div className="px-3 md:px-0">
+                <h1 className="mb-3 break-words text-xl leading-8 sm:text-2xl">
+                  {data?.post?.title}
+                </h1>
 
-              <div className="mb-4 flex flex-col sm:flex-row sm:space-x-1">
-                <div className="flex grow items-center space-x-1 justify-between">
-                  {hasMounted && <UserPophover user={data.post.creator} />}
-                  <div className="flex items-center space-x-4">
-                    <ButtonShare />
-                    <ButtonMore
+                <div className="mb-4 flex flex-col sm:flex-row sm:space-x-1">
+                  <div className="flex grow items-center space-x-1 justify-between">
+                    {hasMounted && <UserPophover user={data.post.creator} />}
+                    <div className="flex items-center space-x-4">
+                      <ButtonShare />
+                      <ButtonMore
+                        postId={data?.post?.id}
+                        username={data?.post?.creator.username}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <Markdown source={data?.post?.content} />
+
+                <div
+                  className={clsx(
+                    !inView ? "sticky flex bottom-3 justify-center" : "hidden"
+                  )}
+                >
+                  <div className="bg-skin-bg border border-skin-border text-skin-text shadow-lg h-[46px] px-[22px] rounded-[23px] flex items-center space-x-4">
+                    <ButtonReact
                       postId={data?.post?.id}
-                      username={data?.post?.creator.username}
+                      type={ReactionTypes.Like}
+                      reacts={data?.post?.likes}
+                      reacted={data?.post?.likeStatus}
                     />
+                    <ButtonComment />
+                  </div>
+                </div>
+
+                <div ref={observe} className="py-4 flex justify-between">
+                  <div className="flex items-center space-x-4">
+                    <ButtonReact
+                      postId={data?.post?.id}
+                      type={ReactionTypes.Like}
+                      reacts={data?.post?.likes}
+                      reacted={data?.post?.likeStatus}
+                    />
+                    <ButtonComment />
                   </div>
                 </div>
               </div>
-
-              <Markdown source={data?.post?.content} />
-
-              <div
-                className={clsx(
-                  !inView ? "sticky flex bottom-3 justify-center" : "hidden"
-                )}
-              >
-                <div className="bg-skin-bg border border-skin-border text-skin-text shadow-lg h-[46px] px-[22px] rounded-[23px] flex items-center space-x-4">
-                  <ButtonReact
-                    postId={data?.post?.id}
-                    type={ReactionTypes.Like}
-                    reacts={data?.post?.likes}
-                    reacted={data?.post?.likeStatus}
-                  />
-                  <ButtonComment />
-                </div>
-              </div>
-
-              <div ref={observe} className="py-4 flex justify-between">
-                <div className="flex items-center space-x-4">
-                  <ButtonReact
-                    postId={data?.post?.id}
-                    type={ReactionTypes.Like}
-                    reacts={data?.post?.likes}
-                    reacted={data?.post?.likeStatus}
-                  />
-                  <ButtonComment />
-                </div>
-              </div>
-            </div>
+            </>
           )}
         </div>
 
@@ -117,7 +124,9 @@ const Post = () => {
                         </div>
                       </h3>
                       <div className="mb-[12px] text-skin-text">
-                        {data?.post.creator.username}
+                        <Link href={`/${data.post.creator.username}`}>
+                          <a>@{data?.post.creator.username}</a>
+                        </Link>
                       </div>
                     </div>
                   </div>

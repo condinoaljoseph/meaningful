@@ -105,6 +105,18 @@
   @apply animate-pulse-fast bg-skin-border;
 }
 
+/* move this to link components */
+a,
+.a {
+  color: var(--link-color);
+}
+
+a:hover,
+.a:hover {
+  cursor: pointer;
+  text-decoration: none;
+}
+
 @import url("./markdown.css");
 @import url("./modal.css");
 @import url("./loading.css");
