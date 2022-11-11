@@ -1,10 +1,6 @@
 FROM node:14
 
-# Create app directory
-WORKDIR /usr/src/app
-
-RUN echo "hello world"
-
+WORKDIR /meaningful
 RUN pwd
 
 # Install app dependencies
@@ -25,7 +21,7 @@ RUN yarn
 
 # Bundle app source
 COPY . .
-COPY .env.production .env
+COPY ./.env.production ./.env
 
 RUN yarn build
 
