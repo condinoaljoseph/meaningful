@@ -55,7 +55,7 @@ const main = async () => {
         secure: __prod__, // cookie only works on https
       },
       saveUninitialized: true,
-      secret: "ayaw boss",
+      secret: process.env.SECRET,
       resave: false,
     })
   );
